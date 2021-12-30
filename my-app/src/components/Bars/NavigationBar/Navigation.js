@@ -9,12 +9,15 @@ import {
   Cart,
   List,
   AvatarWrapper,
+  Seller
 } from "./Navigation.style";
 import { UserOutlined } from "@ant-design/icons";
 import {
   ShoppingCartOutlined,
   OrderedListOutlined,
   DownOutlined,
+  DollarOutlined 
+
 } from "@ant-design/icons";
 const menu = (
   <Menu>
@@ -68,10 +71,10 @@ export default function Navigation() {
   };
 
   return (
-    <NavigationWrapper>
+    <NavigationWrapper >
       <Menu
         mode="horizontal"
-        style={{ backgroundColor: "#C3620D", width: "60%" }}
+        style={{ backgroundColor: "#8d5524", width: "60%" }}
       >
         <Menu.Item key="home">
           <Link to="/" style={{ color: "white", fontWeight: "900" }}>
@@ -212,6 +215,14 @@ export default function Navigation() {
         </AuthWrapper>
       ) : (
         <AuthWrapper>
+          <Seller>
+          <DollarOutlined
+          theme="filled"
+          twoToneColor="#eb2f96"
+          style={{ color: "white", fontSize: "16px", fontWeight: "900" }} />
+           
+          <p className="seller-text">Kênh bán hàng</p>
+          </Seller>
           <Cart>
             <ShoppingCartOutlined
               theme="filled"
