@@ -15,9 +15,8 @@ router.get("/", (req, res) => {
               name: doc.data().name,
               price: doc.data().price,
               pricebuy: doc.data().pricebuy,
-              image: doc.data().image,
               datecreate: doc.data().datecreate,
-              dateend: doc.data().dateend,
+              dateend: doc.data().dateend
             };
             response.push(selectedItem);
           }
@@ -28,5 +27,24 @@ router.get("/", (req, res) => {
         return res.status(500).send(error);
       }
     })();
+});
+router.post("/add", (req, res) => {
+  (async () => {
+    try {
+      const document = await db.collection("products").add({
+        id: doc.id,
+        name: req.body.name,
+        price: req.body.price,
+        pricebuy: req.body.pricebuy,
+        datecreate: req.body.datecreate,
+        dateend: req.body.dateend,
+        isAccept: req.body.isAccept
+      });
+
+      return res.status(200).send("Add successful");
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  })();
 });
 module.exports = router;

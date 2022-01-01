@@ -4,7 +4,23 @@ const router = express.Router();
 
 
 const db = require("../db");
+router.post("/login", (req, res) => {
+  (async () => {
+    try {
+      const document = await db.collection("users").add({
+        name: req.body.name,
+        password: req.body.password,
+        username: req.body.username,
+        birthdate: req.body.datecreate 
+        
+      });
 
+      return res.status(200).send("Add successful");
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  })();
+});
 router.get("/", (req, res) => {
     (async () => {
       try {
@@ -32,4 +48,21 @@ router.get("/", (req, res) => {
       }
     })();
 });
+router.post("/add", (req, res) => {
+    (async () => {
+      try {
+        const document = await db.collection("users").add({
+          name: req.body.name,
+          password: req.body.password,
+          username: req.body.username,
+          birthdate: req.body.datecreate 
+          
+        });
+  
+        return res.status(200).send("Add successful");
+      } catch (error) {
+        return res.status(500).send(error);
+      }
+    })();
+  });
 module.exports = router;

@@ -14,6 +14,7 @@ import {
   } from 'antd';
 import { Title } from "../Invidual.style";
 export default function Profile() {
+ 
   return (
     <ProfileWrapper>
        

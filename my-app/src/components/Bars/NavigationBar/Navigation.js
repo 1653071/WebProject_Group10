@@ -1,4 +1,5 @@
 import { useState, useContext } from "react";
+
 import { Avatar, Menu, Dropdown } from "antd";
 import { Button, Modal, Form, Input, Checkbox } from "antd";
 import { Link } from "react-router-dom";
@@ -221,7 +222,7 @@ export default function Navigation() {
           twoToneColor="#eb2f96"
           style={{ color: "white", fontSize: "16px", fontWeight: "900" }} />
            
-          <p className="seller-text">Kênh bán hàng</p>
+          <Link to="/seller"><p className="seller-text">Kênh bán hàng</p></Link>
           </Seller>
           <Cart>
             <ShoppingCartOutlined

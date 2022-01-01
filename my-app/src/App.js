@@ -15,20 +15,22 @@ import SuccessJoinSeller from "./container/SuccessJoinSeller/SuccessJoinSeller";
 import SellerPage from "./container/SellerPage/SellerPage";
 import AllProduct from "./container/SellerPage/AllProduct/AllProduct"
 import AuctionWinner from "./container/SellerPage/AuctionWinner/AuctionWinner";
+import AppContext from './context/ProductContext'
 const { Header, Footer, Sider, Content } = Layout;
 function PrivateRoute({ children, ...rest }) {
   return <Route {...rest} element={children}></Route>;
 }
 function App() {
   return (
-    <Router>
+    
+      <Router>
       <Navigation />
       <div className="App">
         <div className="App-body">
           <Routes>
             <Route exact path="/" element={<HomePage />} />
             <Route exact path="/listing" element={<Listing />} />
-            <Route exact path="/listing/single" element={<SinglePage />} />
+            <Route exact path="/listing/:id" element={<SinglePage />} />
             <Route exact path="/invidual" element={<Invidual />} />
             <Route exact path="/search" element={<SearchPage />} />
             <Route exact path="/joinseller" element={<JoinSeller />} />
@@ -47,6 +49,7 @@ function App() {
       </div>
       <Footer style={{ minHeight: "50px" }}>Footer</Footer>
     </Router>
+
   );
 }
 

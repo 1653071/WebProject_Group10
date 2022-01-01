@@ -27,6 +27,7 @@ import WatchList from "./WatchList/WatchList";
 const { SubMenu } = Menu;
 
 export default function Invidual() {
+  const date =  new Date();
   const [selectedMenuItem, setSelectedMenuItem]= useState('1');
   const componentsSwitch = (key) => {
     switch (key) {
@@ -49,7 +50,7 @@ export default function Invidual() {
       <InvidualWrapper>
       <AvatarWrapper>
         <Avatar size={64} icon={<UserOutlined />} />
-        <Name>Nguyen Minh Quang</Name>
+        <Name>{date.getDay()}</Name>
         <Email>@quang</Email>
         <MenuWrapper>
         <Menu
