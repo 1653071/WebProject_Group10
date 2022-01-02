@@ -1,4 +1,5 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 import ProductImage from "./ProductImage/ProductImage";
 import { PostImage, SinglePageWrapper, Container,ProductDetail } from "./SinglePage.style";
 import Information from "./Information/Information";
@@ -7,6 +8,8 @@ import { Image } from "antd";
 import Seller from "./Seller/Seller";
 import RelateProduct from "./RelateProduct/RelateProduct";
 export default function SinglePage(props) {
+  const location = useLocation()
+  const { item } = location.state
   return (
     <SinglePageWrapper>
       
@@ -18,7 +21,7 @@ export default function SinglePage(props) {
            style={{width:"100%" , padding:"0",margin:"0"}}
         />
         </PostImage>
-        <Information />
+        <Information item={item} />
       </Container>
       <ProductDetail>
         <Seller />

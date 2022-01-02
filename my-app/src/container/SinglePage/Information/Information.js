@@ -17,15 +17,23 @@ import {
 } from "./Information.style";
 
 const { Title } = Typography;
-export default function Information() {
+export default function Information({item}) {
   return (
     <InformationWrapper>
       <Title level={4} style={{ fontWeight: "bold", color: "#994C00",fontFamily:"Arial"}}>
-        Iphone 5 cũ
+        {item.name}
       </Title>
       <AuctionInfo>
-        <Date>Từ 16-10-2021 đến 16-10-2021</Date>
-        <Time>16:00:16</Time>
+        <Row gutter={24} style={{paddingBottom:"20px"}}>
+        <Col span={8}>Thời gian</Col>
+        <Col span={16}><Date>Từ 16-10-2021 đến 16-10-2021</Date></Col>
+        </Row>
+        <Row gutter={24}>
+        <Col span={8}>Còn lại</Col>
+        <Col span={16}><Time>16:00:16</Time></Col>
+        </Row>
+        
+        
         <ContractorWrapper>
           <HeadTitle>Người ra giá cao nhất</HeadTitle>
           <Contractor>quang.work</Contractor>

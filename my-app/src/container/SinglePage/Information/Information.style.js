@@ -14,7 +14,8 @@ export const AuctionInfo= styled.div`
 
 `;
 export const Date= styled.div`
-    color: #C0C0C0;
+    color:black;
+    font-weight:600;
    
 `;
 export const ContractorWrapper= styled.div`

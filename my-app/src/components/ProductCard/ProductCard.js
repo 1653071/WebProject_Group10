@@ -7,7 +7,7 @@ const { Meta } = Card;
 export default function  ProductCard(props) {
   
   const current = new Date();
-  const location = useLocation();
+ 
   
   
   const [time,setTime] = useState(Date.now());
@@ -20,7 +20,7 @@ export default function  ProductCard(props) {
   return (
     <Card
       hoverable
-      style={{ width: 300, padding: "10px" }}
+      style={{ width: "25%", padding: "10px" }}
       cover={
         <img
           alt="example"
@@ -28,8 +28,8 @@ export default function  ProductCard(props) {
         />
       }
     >
-      <Meta title={props.item.name} />
-      <Price>{}</Price>
+      <Meta />
+      <Price>sad</Price>
       <Time></Time>
     </Card>
   );

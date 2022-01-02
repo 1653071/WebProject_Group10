@@ -1,25 +1,31 @@
 const express = require("express");
 const router = express.Router();
-
+var jwt = require('jsonwebtoken');
+var bcrypt = require('bcryptjs');
 
 
 const db = require("../db");
-router.post("/login", (req, res) => {
+router.post('/register', async function(req, res) {
+  let user = req.body;
+  user.password = bcrypt.hashSync(user.password, 10);
   (async () => {
     try {
       const document = await db.collection("users").add({
-        name: req.body.name,
-        password: req.body.password,
-        username: req.body.username,
-        birthdate: req.body.datecreate 
-        
+        username: user.username,
+        password: user.password
       });
 
-      return res.status(200).send("Add successful");
+      return res.status(200).send({user});
     } catch (error) {
       return res.status(500).send(error);
     }
   })();
+
+  user = {
+      id: ret[0],
+      ...user
+  }
+  res.status(201).json(user);
 });
 router.get("/", (req, res) => {
     (async () => {

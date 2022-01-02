@@ -16,6 +16,7 @@ import SellerPage from "./container/SellerPage/SellerPage";
 import AllProduct from "./container/SellerPage/AllProduct/AllProduct"
 import AuctionWinner from "./container/SellerPage/AuctionWinner/AuctionWinner";
 import AppContext from './context/ProductContext'
+import Login from "./container/Login/Login";
 const { Header, Footer, Sider, Content } = Layout;
 function PrivateRoute({ children, ...rest }) {
   return <Route {...rest} element={children}></Route>;
@@ -28,6 +29,7 @@ function App() {
       <div className="App">
         <div className="App-body">
           <Routes>
+            <Route path="/login" element={<Login />} />
             <Route exact path="/" element={<HomePage />} />
             <Route exact path="/listing" element={<Listing />} />
             <Route exact path="/listing/:id" element={<SinglePage />} />

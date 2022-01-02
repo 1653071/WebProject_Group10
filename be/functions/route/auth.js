@@ -1,0 +1,66 @@
+const express = require("express");
+const router = express.Router();
+var jwt = require("jsonwebtoken");
+var bcrypt = require("bcryptjs");
+const db = require("../db");
+const randomstring =  require("randomstring");
+router.post("/login", async function (req, res) {
+  (async () => {
+    try {
+      let username = req.body.username;
+      let password = req.body.password;
+
+      let query = db.collection("users").where("username", "==", username);
+
+      let response = {};
+
+      await query.get().then((querySnapshot) => {
+        let docs = querySnapshot.docs;
+        if (docs.length == 0) {
+          const selectedItem = {
+            statusLogin: false,
+          };
+          response = selectedItem;
+
+          return response;
+        }
+        for (let doc of docs) {
+          if (bcrypt.compareSync(password, doc.data().password) == false) {
+            return res.status(401).json({ authetication: false });
+          }
+          const response = {
+            userId: doc.id,
+            username: doc.username,
+
+            statusLogin: true,
+          };
+        
+          const opt = {
+            expiresIn: 10 * 6,
+          };
+          const payload = {
+            userId: response.userId,
+          };
+          const accessToken = jwt.sign(payload, "SECRET_KEY", opt);
+          const refreshToken = randomstring.generate(80);
+          let query1 = db.collection("users").where("username", "==", username);
+          res.status(201).json({
+            authetication: true,
+            accessToken,
+            refreshToken
+        });
+          
+        }
+
+        return response;
+      });
+
+      return res.status(200).send(response);
+    } catch (error) {
+      console.log(error);
+      return res.status(500).send(error);
+    }
+  })();
+});
+
+module.exports = router;

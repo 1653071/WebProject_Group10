@@ -89,7 +89,7 @@ export default function Navigation() {
         </Menu.Item>
       </Menu>
 
-      {loggedIn == false ? (
+      {localStorage.isLoggin == false ? (
         <AuthWrapper>
           <Button
             onClick={showModalSignUp}
