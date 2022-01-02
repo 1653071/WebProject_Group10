@@ -8,4 +8,5 @@ app.use(cors({ origin: true }));
 
 app.use("/users", usersRouter);
 app.use("/products", productsRouter);
+
 exports.app = functions.https.onRequest(app);
