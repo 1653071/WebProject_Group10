@@ -111,6 +111,7 @@ router.put("/update/:id", (req, res) => {
     }
   })();
 });
+
 router.put("/acceptseller/:id", (req, res) => {
   (async () => {
     try {
@@ -119,6 +120,21 @@ router.put("/acceptseller/:id", (req, res) => {
       await document.update({
         isSeller: true
       });
+      return res.status(200).send();
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  })();
+});
+
+//request seller
+router.put("/request/:id", (req, res) => {
+  (async () => {
+    try {
+      const document = db.collection("users").doc(req.params.id);
+      await document.update({
+        request : "Request become seller."
+      });
 
       return res.status(200).send();
     } catch (error) {
@@ -126,4 +142,5 @@ router.put("/acceptseller/:id", (req, res) => {
     }
   })();
 });
+
 module.exports = router;
