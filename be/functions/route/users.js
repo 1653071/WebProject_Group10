@@ -113,4 +113,19 @@ router.put("/update/:id", (req, res) => {
     }
   })();
 });
+//request seller
+router.put("/request/:id", (req, res) => {
+  (async () => {
+    try {
+      const document = db.collection("users").doc(req.params.id);
+      await document.update({
+        request : "Request become seller."
+      });
+      return res.status(200).send();
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  })();
+});
+
 module.exports = router;
