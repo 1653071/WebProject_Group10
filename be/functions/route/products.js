@@ -17,7 +17,7 @@ router.get("/", (req, res) => {
               name: doc.data().name,
               price: doc.data().price,
               pricebuy: doc.data().pricebuy,
-              datecreate: doc.data().datecreate,
+              datecreated: doc.data().datecreate,
               dateend: doc.data().dateend
             };
             response.push(selectedItem);
@@ -105,4 +105,5 @@ router.delete("/delete/:id", (req, res) => {
     }
   })();
 });
+
 module.exports = router;
