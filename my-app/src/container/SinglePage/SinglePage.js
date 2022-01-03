@@ -7,6 +7,7 @@ import Description from "./Description/Description";
 import { Image } from "antd";
 import Seller from "./Seller/Seller";
 import RelateProduct from "./RelateProduct/RelateProduct";
+import History from "./History/History";
 export default function SinglePage(props) {
   const location = useLocation()
   const { item } = location.state
@@ -27,7 +28,7 @@ export default function SinglePage(props) {
         <Seller />
         <Description />
         <RelateProduct />
-        
+        <History></History>
       </ProductDetail>
     </SinglePageWrapper>
   );

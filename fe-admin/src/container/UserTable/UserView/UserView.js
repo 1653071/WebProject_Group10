@@ -1,6 +1,7 @@
-import React,{useState} from "react"
+import React,{useState,useContext} from "react"
 import { Table, Button,Drawer,Divider, Col, Row } from 'antd';
 import usersdata from "../../../data/users"
+import UserContext from "../../../context/UserContext"
 const DescriptionItem = ({ title, content }) => (
   <div className="site-description-item-profile-wrapper">
     <p className="site-description-item-profile-p-label">{title}:</p>
@@ -10,6 +11,8 @@ const DescriptionItem = ({ title, content }) => (
 
   
 export default function UserView(){
+  const { store } = useContext(UserContext);
+  const { items, query } = store;
   const [visible, setVisible] = useState(false);
   const showDrawer = () => {
     setVisible(true);
@@ -25,14 +28,10 @@ export default function UserView(){
     },
     {
       title: 'Age',
-      dataIndex: 'age',
-      key: 'age',
+      dataIndex: 'birthdate',
+      key: 'birthdate',
     },
-    {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
-    },
+    
     {
       title: "Action",
       dataIndex: "action",
@@ -63,7 +62,7 @@ export default function UserView(){
   ];
     return(
         <>
-        <Table dataSource={usersdata} columns={columns} />
+        <Table dataSource={items} columns={columns} />
         <Drawer title="Basic Drawer" placement="right" onClose={onClose} visible={visible}>
         <p className="site-description-item-profile-p" style={{ marginBottom: 24 }}>
             User Profile

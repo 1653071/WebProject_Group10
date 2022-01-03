@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { AddProductWrapper } from "./AddProduct.style";
 import {
   Form,
@@ -11,9 +12,12 @@ import {
   Checkbox,
   Button,
   AutoComplete,
+  InputNumber, DatePicker, TimePicker
 } from "antd";
-import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 
+import { instance } from "../../../ultils/ultils";
+import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 const { Option } = Select;
 const formItemLayout = {
@@ -32,75 +36,61 @@ const formItemLayoutWithOutLabel = {
     sm: { span: 20, offset: 4 },
   },
 };
-const residences = [
-  {
-    value: "zhejiang",
-    label: "Zhejiang",
-    children: [
-      {
-        value: "hangzhou",
-        label: "Hangzhou",
-        children: [
-          {
-            value: "xihu",
-            label: "West Lake",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    value: "jiangsu",
-    label: "Jiangsu",
-    children: [
-      {
-        value: "nanjing",
-        label: "Nanjing",
-        children: [
-          {
-            value: "zhonghuamen",
-            label: "Zhong Hua Men",
-          },
-        ],
-      },
-    ],
-  },
-];
 
-const tailFormItemLayout = {
-  wrapperCol: {
-    xs: {
-      span: 24,
-      offset: 0,
-    },
-    sm: {
-      span: 16,
-      offset: 8,
-    },
-  },
-};
+
+
 export default function AddProduct() {
   const [form] = Form.useForm();
-  const onFinish = (values) => {
-    console.log("Received values of form:", values);
-  };
-  const prefixSelector = (
-    <Form.Item name="prefix" noStyle>
-      <Select style={{ width: 70 }}>
-        <Option value="86">+86</Option>
-        <Option value="87">+87</Option>
-      </Select>
-    </Form.Item>
-  );
+  const [name,setName] = useState();
+  const [price,setPrice] = useState();
+  const [pricebuy,setPricebuy] = useState();
+  
+  const [category_id,setCategoryID] = useState();
 
-  const suffixSelector = (
-    <Form.Item name="suffix" noStyle>
-      <Select style={{ width: 70 }}>
-        <Option value="USD">$</Option>
-        <Option value="CNY">¥</Option>
-      </Select>
-    </Form.Item>
-  );
+  const name_changed = function (e) {
+    setName(e.target.value);
+  };
+  const price_changed = function (e) {
+    setPrice(e);
+  };
+  const pricebuy_changed = function (e) {
+    setPricebuy(e);
+  };
+
+  const category_change= function (e) {
+    setCategoryID(e.target.value);
+  };
+  const onFinish = async function () {
+    try {
+      const data = { 
+        name: name,
+        price: price,
+        pricebuy: pricebuy,
+        category_id:category_id,
+        isAccept: true };
+      const res = await instance.post("/products/add", data);
+      if (res.status == 200) {
+        const retUrl = location.state?.from?.pathname || "/seller/products";
+        navigate(retUrl);
+      } else {
+        alert("Invalid login.");
+      }
+    } catch (err) {
+      alert("Invalid login.");
+    }
+  };
+  const onGenderChange = (value) => {
+    switch (value) {
+      case 'hfIXPdIhFVqxS92bCli5':
+        setCategoryID('hfIXPdIhFVqxS92bCli5');
+        return;
+      default:
+        setCategoryID('nFKDk4PRH3UCmIcfX6JN');
+        return;
+    }
+  };
+  const navigate = useNavigate();
+  const location = useLocation();
 
   return (
     <Form
@@ -109,80 +99,56 @@ export default function AddProduct() {
       onFinish={onFinish}
     >
       <Form.Item
-        name="email"
-        label="E-mail"
+        name="name"
+        label="Tên sản phẩm"
         rules={[
-          {
-            type: "email",
-            message: "The input is not valid E-mail!",
-          },
+          
           {
             required: true,
-            message: "Please input your E-mail!",
+            message: "Nhập tên sản phẩm",
           },
         ]}
       >
-        <Input />
+        <Input onChange={name_changed} />
       </Form.Item>
       <Row gutter={24}>
         <Col span={12}>
           <Form.Item
-            name="email"
+            name="pricebuy"
             label="Giá mua ngay"
-            rules={[
-              {
-                type: "email",
-                message: "The input is not valid E-mail!",
-              },
-              {
-                required: true,
-                message: "Please input your E-mail!",
-              },
-            ]}
+            
           >
-            <Input />
+            <InputNumber onChange={pricebuy_changed} />
           </Form.Item>
         </Col>
         <Col span={12}>
           <Form.Item
-            name="email"
+            name="price"
             label="Giá khởi điểm"
             rules={[
-              {
-                type: "email",
-                message: "The input is not valid E-mail!",
-              },
+              
               {
                 required: true,
-                message: "Please input your E-mail!",
+                message: "Nhập giá khởi điểm",
               },
             ]}
           >
-            <Input />
+            <InputNumber onChange={price_changed} />
           </Form.Item>
         </Col>
       </Row>
-      <Form.Item
-        name="description"
-        label="Mô tả"
-        rules={[
-          {
-            type: "email",
-            message: "The input is not valid E-mail!",
-          },
-          {
-            required: true,
-            message: "Please input your E-mail!",
-          },
-        ]}
-      >
-        <TextArea rows={5} />,
-      </Form.Item>
+     
       <Form.Item name="radio-group" label="Gia hạn">
         <Radio.Group>
           <Radio value="true">Có</Radio>
           <Radio value="false">Không</Radio>
         </Radio.Group>
+      </Form.Item>
+      <Form.Item name="category" label="Select" rules={[{ required: true }]}>
+        <Select onChange={onGenderChange}>
+          <Select.Option value="hfIXPdIhFVqxS92bCli5">Máy tính xách tay</Select.Option>
+          <Select.Option value="nFKDk4PRH3UCmIcfX6JN">Điện thoại di động</Select.Option>
+        </Select>
       </Form.Item>
       <Form.List
         name="names"

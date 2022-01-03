@@ -32,7 +32,10 @@ export default function Information({item}) {
         <Col span={8}>Còn lại</Col>
         <Col span={16}><Time>16:00:16</Time></Col>
         </Row>
-        
+        <Row gutter={24}>
+        <Col span={8}>Còn lại</Col>
+        <Col span={16}><Time>16:00:16</Time></Col>
+        </Row>
         
         <ContractorWrapper>
           <HeadTitle>Người ra giá cao nhất</HeadTitle>

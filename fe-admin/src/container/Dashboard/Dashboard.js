@@ -5,9 +5,12 @@ import { DashboardWrapper } from "./Dashboard.style";
 import { Route, Link, Routes } from "react-router-dom";
 import ProductTable from "../ProductTable/ProductTable";
 import UserTable from "../UserTable/UserTable";
+import { instance } from "../../ultils/ultils";
+import reducer , {initialState} from '../../reducer/ProductReducer'
 const { Header, Footer, Sider, Content } = Layout;
 
 export default function Dashboard() {
+  
   return (
     <DashboardWrapper>
       <Layout className="" style={{ height: "100vh" }}>
