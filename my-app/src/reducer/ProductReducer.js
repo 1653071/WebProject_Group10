@@ -18,7 +18,11 @@ export default function todoAppReducer (state, { type, payload }) {
           ...state,
           query: payload
         }
-  
+     case 'category_filter':
+          return {
+            ...state,
+            category:  payload
+          }
       case 'complete_task':
         return {
           ...state,
@@ -37,5 +41,6 @@ export default function todoAppReducer (state, { type, payload }) {
   
   export const initialState = {
     items: [],
-    query: ''
+    query: '',
+    category:'all'
   };

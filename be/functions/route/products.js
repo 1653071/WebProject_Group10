@@ -18,7 +18,8 @@ router.get("/", (req, res) => {
               price: doc.data().price,
               pricebuy: doc.data().pricebuy,
               datecreated: doc.data().datecreate,
-              dateend: doc.data().dateend
+              dateend: doc.data().dateend,
+              category_id: doc.data().category_id
             };
             response.push(selectedItem);
           }
