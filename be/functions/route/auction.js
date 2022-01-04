@@ -5,7 +5,7 @@ const db = require("../db");
 
 
 //Get auction by id product
-router.get("/:productID", (req, res) => {
+router.get("/product/:productID", (req, res) => {
     const productID = req.params.productID;
     (async () => {
       try {
@@ -36,18 +36,35 @@ router.get("/:productID", (req, res) => {
 router.post("/add", (req, res) => {
     (async () => {
         try {
+          const productID = req.body.productId;
+          
+          const document = db.collection("products").doc(productID);
+          let product = await document.get();
+          let price_tmp = req.body.price;
+          let price_product = product.data().pricebuy;
+          let price_aution = product.data().price_auction;
+          let timeEnd = Date.parse(product.data().dateend);
+          let timeCur = Date.parse(req.body.datecreate);
+          let tmp = timeEnd - timeCur;
+          //let tmp = (price_tmp - price_aution) / jump;
+          if (price_tmp > price_aution && tmp >=0 ) {
             const document = await db.collection("auction").add({
-                name : req.body.name,
-                price : req.body.price,
-                productId : req.body.productId,
-                sellerId : req.body.sellerId,
-                userId : req.body.userId,
-                datecreate: req.body.datecreate
-            });
+              datecreate: req.body.datecreate,
+              price : req.body.price,
+              productId : req.body.productId,
+              sellerId : req.body.sellerId,
+              userId : req.body.userId  
+          });
             return res.status(200).send("Add successful");
+          } else {
+            return res.status(404).send("Add fail");
+          }
         } catch (error) {
+         
+          console.log(error);
             return res.status(500).send(error);
-        }
+            
+        } 
     })();
 });
 
