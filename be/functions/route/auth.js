@@ -34,7 +34,7 @@ router.post("/login", async function (req, res) {
 
             statusLogin: true,
           };
-        
+
           const opt = {
             expiresIn: 10 * 6,
           };
@@ -48,8 +48,8 @@ router.post("/login", async function (req, res) {
             authetication: true,
             accessToken,
             refreshToken
-        });
-          
+          });
+
         }
 
         return response;
