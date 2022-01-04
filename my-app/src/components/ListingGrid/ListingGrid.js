@@ -11,6 +11,7 @@ const style = { background: "#0092ff", padding: "8px 0" };
 export default function ListingGrid(props) {
   const { store } = useContext(ProductContext);
   const { items, query ,category_id} = store;
+  console.log(category_id);
   return (
     <ListingGridWrapper>
       <Row gutter={18}>
@@ -19,10 +20,10 @@ export default function ListingGrid(props) {
             return item.name.toLowerCase().includes(query.toLowerCase());
           })
           .filter(function (item) {
-            if(category_id == "all"){
+            if(category_id === "all"){
               return item;
             }
-            return item.category_id === category_id);
+            return item.category_id === category_id;
           })
           .map(function (item) {
             return (

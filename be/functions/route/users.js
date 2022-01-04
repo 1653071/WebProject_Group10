@@ -8,7 +8,7 @@ var bcrypt = require('bcryptjs');
 
 
 const db = require("../db");
-router.post('/register', async function(req, res) {
+router.post('/register',function(req, res) {
   let user = req.body;
   user.password = bcrypt.hashSync(user.password, 10);
   (async () => {

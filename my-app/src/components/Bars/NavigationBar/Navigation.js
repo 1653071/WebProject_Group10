@@ -1,8 +1,9 @@
 import { useState, useContext } from "react";
-
+import { useNavigate  ,useLocation,Link } from 'react-router-dom';
 import { Avatar, Menu, Dropdown } from "antd";
 import { Button, Modal, Form, Input, Checkbox } from "antd";
-import { Link } from "react-router-dom";
+import { instance, parseJwt } from "../../../ultils/ultils";
+
 import "antd/dist/antd.css";
 import {
   NavigationWrapper,
@@ -20,34 +21,54 @@ import {
   DollarOutlined 
 
 } from "@ant-design/icons";
-const menu = (
-  <Menu>
-    <Menu.Item>
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://www.antgroup.com"
-      >
-        Thông tin cá nhân
-      </a>
-    </Menu.Item>
-    <Menu.Item>
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://www.antgroup.com"
-      >
-        Lịch sử đấu giá
-      </a>
-    </Menu.Item>
-    
-    <Menu.Item danger>a danger item</Menu.Item>
-  </Menu>
-);
+
 export default function Navigation() {
+  const navigate = useNavigate();
+ 
+  const location = useLocation();
+  const [username, Setusername] = useState("");
+  const [password, Setpassword] = useState("");
+  const onFinishFailed = () => {
+    console.log("Failed:");
+  };
+  const username_Changed = function (e) {
+    Setusername(e.target.value);
+  };
+  const password_Changed = function (e) {
+    Setpassword(e.target.value);
+  };
+  const menu = (
+    <Menu>
+      <Menu.Item>
+        <Link
+          to="/invidual"
+        >
+          Thông tin cá nhân
+        </Link>
+      </Menu.Item>
+      <Menu.Item>
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://www.antgroup.com"
+        >
+          Lịch sử đấu giá
+        </a>
+      </Menu.Item>
+      
+      <Menu.Item onClick={()=>{
+         delete localStorage.accessToken;
+         delete localStorage.name;
+         delete localStorage.isLoggin
+         delete localStorage.userID
+        navigate('/login');
+      }} danger>Logout</Menu.Item>
+    </Menu>
+  );
+ 
   const [isModalSignInVisible, setIsModalSignInVisible] = useState(false);
   const [isModalSignUpVisible, setIsModalSignUpVisible] = useState(false);
-  const loggedIn = true;
+  
   const showModal = () => {
     setIsModalSignInVisible(true);
   };
@@ -70,7 +91,28 @@ export default function Navigation() {
   const handleCancelSignUp = () => {
     setIsModalSignUpVisible(false);
   };
+  const onFinish = async function () {
+    try {
+      const data = { username: username, password: password };
+      const res = await instance.post("auth/login", data);
+      if (res.data.authetication) {
+        // console.log(res.data.accessToken);
+        localStorage.accessToken = res.data.accessToken;
+        localStorage.name = res.data.name;
+        localStorage.isLoggin = true;
+        const obj = parseJwt(res.data.accessToken);
+        localStorage.userID = res.data.userID;
 
+        // console.log(location.state);
+        const retUrl = location.state?.from?.pathname || "/";
+        navigate(retUrl);
+      } else {
+        alert("Invalid login.");
+      }
+    } catch (err) {
+      alert("Invalid login.");
+    }
+  };
   return (
     <NavigationWrapper >
       <Menu
@@ -89,7 +131,7 @@ export default function Navigation() {
         </Menu.Item>
       </Menu>
 
-      {localStorage.isLoggin == false ? (
+      {localStorage.isLoggin === undefined ? (
         <AuthWrapper>
           <Button
             onClick={showModalSignUp}
@@ -122,6 +164,7 @@ export default function Navigation() {
             visible={isModalSignInVisible}
             onOk={handleOk}
             onCancel={handleCancel}
+            
           >
             <Form
               name="basic"
@@ -129,6 +172,7 @@ export default function Navigation() {
               wrapperCol={{ span: 16 }}
               initialValues={{ remember: true }}
               autoComplete="off"
+              onFinish={onFinish}
             >
               <Form.Item
                 label="Username"
@@ -137,7 +181,7 @@ export default function Navigation() {
                   { required: true, message: "Please input your username!" },
                 ]}
               >
-                <Input />
+                <Input onChange={username_Changed} />
               </Form.Item>
 
               <Form.Item
@@ -147,7 +191,7 @@ export default function Navigation() {
                   { required: true, message: "Please input your password!" },
                 ]}
               >
-                <Input.Password />
+                <Input.Password onChange={password_Changed} />
               </Form.Item>
 
               <Form.Item
@@ -248,7 +292,7 @@ export default function Navigation() {
                 style={{ backgroundColor: "#87d068" }}
                 icon={<UserOutlined />}
               ></Avatar>
-              <p className="name">Xin chào, Quang</p>
+              <p className="name">Xin chào, {localStorage.name}</p>
            
           </AvatarWrapper>
           </Dropdown>
