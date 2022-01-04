@@ -17,6 +17,7 @@ router.get("/", (req, res) => {
               name: doc.data().name,
               price: doc.data().price,
               pricebuy: doc.data().pricebuy,
+              jump : doc.data().jump,
               datecreated: doc.data().datecreate,
               dateend: doc.data().dateend,
               category_id: doc.data().category_id
@@ -54,12 +55,15 @@ router.post("/add", (req, res) => {
   (async () => {
     try {
       const document = await db.collection("products").add({
-      
         name: req.body.name,
         price: req.body.price,
         pricebuy: req.body.pricebuy,
         category_id: req.body.category_id,
-        isAccept: req.body.isAccept
+        description : req.body.description,
+        sellerId : req.body.sellerId,
+        jump : req.body.jump,
+        datecreate : req.body.datecreate,
+        dateend :req.body.dateend
       });
 
       return res.status(200).send("Add successful");
@@ -79,9 +83,12 @@ router.put("/update/:id", (req, res) => {
         name: req.body.name,
         price: req.body.price,
         pricebuy: req.body.pricebuy,
-        datecreate: req.body.datecreate,
-        dateend: req.body.dateend,
-        isAccept: req.body.isAccepts
+        category_id: req.body.category_id,
+        description : req.body.description,
+        sellerId : req.body.sellerId,
+        jump : req.body.jump,
+        datecreate : req.body.datecreate,
+        dateend :req.body.dateend
       });
 
       return res.status(200).send();
@@ -96,9 +103,7 @@ router.delete("/delete/:id", (req, res) => {
   (async () => {
     try {
       const document = db.collection("products").doc(req.params.id);
-
       await document.delete();
-
       return res.status(200).send();
     } catch (error) {
       return res.status(500).send(error);

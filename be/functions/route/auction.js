@@ -4,7 +4,7 @@ const router = express.Router();
 const db = require("../db");
 
 
-//Get all San Pham
+//Get auction by id product
 router.get("/:productID", (req, res) => {
     const productID = req.params.productID;
     (async () => {
@@ -17,7 +17,9 @@ router.get("/:productID", (req, res) => {
             const selectedItem = {
               productId:doc.data().productId,
               sellerId: doc.data().sellerId,
-              userId: doc.data().userId
+              userId: doc.data().userId,
+              price : doc.data().price,
+              datecreate : doc.data().datecreate
             };
             response.push(selectedItem);
           }
@@ -30,7 +32,7 @@ router.get("/:productID", (req, res) => {
     })();
 });
 
-
+//add auction
 router.post("/add", (req, res) => {
     (async () => {
         try {
@@ -47,6 +49,34 @@ router.post("/add", (req, res) => {
             return res.status(500).send(error);
         }
     })();
+});
+
+//Get auction by id user
+router.get("/user/:ID", (req, res) => {
+  const UserID = req.params.ID;
+  (async () => {
+    try {
+      let query = db.collection("auction").where("userId","==",UserID);
+      let response = [];
+      await query.get().then((querySnapShot) => {
+        let docs = querySnapShot.docs;
+        for (let doc of docs) {
+          const selectedItem = {
+            productId:doc.data().productId,
+            sellerId: doc.data().sellerId,
+            userId: doc.data().userId,
+            price : doc.data().price,
+            datecreate : doc.data().datecreate
+          };
+          response.push(selectedItem);
+        }
+        return response;
+      });
+      return res.status(200).send(response);
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  })();
 });
 
 

@@ -13,7 +13,7 @@ router.post("/login",function (req, res) {
       let query = db.collection("users").where("username", "==", username);
 
       let response = {};
-
+      
       await query.get().then((querySnapshot) => {
         let docs = querySnapshot.docs;
         if (docs.length == 0) {
@@ -34,7 +34,7 @@ router.post("/login",function (req, res) {
 
             statusLogin: true,
           };
-        
+
           const opt = {
             expiresIn: 10 * 6,
           };
@@ -50,8 +50,8 @@ router.post("/login",function (req, res) {
             authetication: true,
             accessToken,
             refreshToken
-        });
-          
+          });
+
         }
 
         return response;
