@@ -41,11 +41,9 @@ router.get("/", (req, res) => {
             const selectedItem = {
               id: doc.id,
               name: doc.data().name,
-              address: doc.data().address,
-              picture: doc.data().picture,
-              description: doc.data().description,
-              phone: doc.data().phone,
-              type: doc.data().type,
+              birthdate: doc.data().birthdate,
+              isSeller:doc.data().isSeller,
+              isRequest: doc.data().isRequest
             };
             response.push(selectedItem);
           }
@@ -111,6 +109,22 @@ router.put("/update/:id", (req, res) => {
     }
   })();
 });
+
+router.put("/acceptseller/:id", (req, res) => {
+  (async () => {
+    try {
+      const document = db.collection("users").doc(req.params.id);
+
+      await document.update({
+        isSeller: true
+      });
+      return res.status(200).send();
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  })();
+});
+
 //request seller
 router.put("/request/:id", (req, res) => {
   (async () => {
@@ -119,6 +133,7 @@ router.put("/request/:id", (req, res) => {
       await document.update({
         request : "Request become seller."
       });
+
       return res.status(200).send();
     } catch (error) {
       return res.status(500).send(error);

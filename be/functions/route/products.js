@@ -53,12 +53,11 @@ router.post("/add", (req, res) => {
   (async () => {
     try {
       const document = await db.collection("products").add({
-        id: doc.id,
+      
         name: req.body.name,
         price: req.body.price,
         pricebuy: req.body.pricebuy,
-        datecreate: req.body.datecreate,
-        dateend: req.body.dateend,
+        category_id: req.body.category_id,
         isAccept: req.body.isAccept
       });
 

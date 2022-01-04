@@ -8,6 +8,7 @@ import { Avatar, Menu, Button } from "antd";
 import { MailOutlined, AuditOutlined, LikeOutlined } from "@ant-design/icons";
 import AllProduct from "./AllProduct/AllProduct";
 import AuctionWinner from "./AuctionWinner/AuctionWinner";
+import AddProduct from "./AddProduct/AddProduct"
 
 const { SubMenu } = Menu;
 const routes = [
@@ -53,6 +54,7 @@ export default function SellerPage(props) {
       <Content>
       <Suspense>
       <Routes>
+        <Route path="add" element={<AddProduct />} />
          <Route path="products" element={<AllProduct />} />
          <Route path="productsdetail" element={<AuctionWinner />} />
       </Routes>

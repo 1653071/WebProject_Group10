@@ -13,6 +13,9 @@ app.use(cors({ origin: true }));
 
 app.use("/users", usersRouter);
 app.use("/products", productsRouter);
+
+app.use("/auction",auctionRouter);
+
 app.use("/auth", authRouter);
 app.use("/watchlist",watchListRouter);
 app.use("/auction",auctionRouter);

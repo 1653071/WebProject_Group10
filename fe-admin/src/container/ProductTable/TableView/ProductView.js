@@ -1,21 +1,27 @@
-import React, { useState } from "react";
-import { Table, Button, Drawer } from "antd";
-const dataSource = [
-  {
-    key: "1",
-    name: "Mike",
-    age: 32,
-    address: "10 Downing Street",
-  },
-  {
-    key: "2",
-    name: "John",
-    age: 42,
-    address: "10 Downing Street",
-  },
-];
+import React, { useState, useContext } from "react";
+import { Table, Button, Drawer, Descriptions, Badge } from "antd";
+import ProductContext from "../../../context/ProductContext";
 
 export default function TableProduct() {
+  const { store } = useContext(ProductContext);
+  const { items, query } = store;
+  const [state, setState] = useState({
+    product: {},
+  });
+  const dataSource = [
+    {
+      key: "1",
+      name: "Mike",
+      age: 32,
+      address: "10 Downing Street",
+    },
+    {
+      key: "2",
+      name: "John",
+      age: 42,
+      address: "10 Downing Street",
+    },
+  ];
   const [visible, setVisible] = useState(false);
   const showDrawer = () => {
     setVisible(true);
@@ -25,24 +31,20 @@ export default function TableProduct() {
   };
   const columns = [
     {
-      title: "Name",
+      title: "Tên",
       dataIndex: "name",
       key: "name",
     },
     {
-      title: "Age",
-      dataIndex: "age",
-      key: "age",
+      title: "Giá hiện tại",
+      dataIndex: "price",
+      key: "price",
     },
-    {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
-    },
+
     {
       title: "Action",
       dataIndex: "action",
-      width: "25%",
+      width: "45%",
       render: (_, record) => (
         <>
           {record.name === "initial" && <Button icon="plus" shape="circle" />}
@@ -53,7 +55,10 @@ export default function TableProduct() {
                 type="primary"
                 shape="round"
                 style={{ marginRight: "10px", border: "none" }}
-                onClick={showDrawer}
+                onClick={() => {
+                  showDrawer();
+                  state.product = record;
+                }}
               >
                 Chi tiết
               </Button>
@@ -69,16 +74,46 @@ export default function TableProduct() {
   ];
   return (
     <>
-      <Table dataSource={dataSource} columns={columns} />
+      <Table dataSource={items} columns={columns} />
       <Drawer
         title="Basic Drawer"
         placement="right"
         onClose={onClose}
         visible={visible}
+        width={"70%"}
       >
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+        <Descriptions title="User Info" bordered>
+          <Descriptions.Item label="Product">
+            {state.product.name}
+          </Descriptions.Item>
+          <Descriptions.Item label="Giá bán">
+            {state.product.price}
+          </Descriptions.Item>
+          <Descriptions.Item label="Automatic Renewal">YES</Descriptions.Item>
+          <Descriptions.Item label="Order time">
+            2018-04-24 18:00:00
+          </Descriptions.Item>
+          <Descriptions.Item label="Usage Time" span={2}>
+            2019-04-24 18:00:00
+          </Descriptions.Item>
+          <Descriptions.Item label="Status" span={3}>
+            <Badge status="processing" text="Đang bán" />
+          </Descriptions.Item>
+
+          <Descriptions.Item label="Danh sách người đặt">
+            Data disk type: MongoDB
+            <br />
+            Database version: 3.4
+            <br />
+            Package: dds.mongo.mid
+            <br />
+            Storage space: 10 GB
+            <br />
+            Replication factor: 3
+            <br />
+            Region: East China 1<br />
+          </Descriptions.Item>
+        </Descriptions>
       </Drawer>
     </>
   );
