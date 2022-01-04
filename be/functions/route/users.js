@@ -101,12 +101,10 @@ router.put("/update/:id", (req, res) => {
   (async () => {
     try {
       const document = db.collection("users").doc(req.params.id);
-
       await document.update({
         name: req.body.name,
         birthdate: req.body.birthdate,
       });
-
       return res.status(200).send();
     } catch (error) {
       return res.status(500).send(error);
