@@ -13,7 +13,7 @@ router.post("/login", async function (req, res) {
       let query = db.collection("users").where("username", "==", username);
 
       let response = {};
-
+      
       await query.get().then((querySnapshot) => {
         let docs = querySnapshot.docs;
         if (docs.length == 0) {

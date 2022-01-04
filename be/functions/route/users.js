@@ -43,7 +43,8 @@ router.get("/", (req, res) => {
               name: doc.data().name,
               birthdate: doc.data().birthdate,
               isSeller:doc.data().isSeller,
-              isRequest: doc.data().isRequest
+              isRequest: doc.data().isRequest,
+              mail : doc.data().mail
             };
             response.push(selectedItem);
           }
@@ -62,8 +63,8 @@ router.post("/add", (req, res) => {
           name: req.body.name,
           password: req.body.password,
           username: req.body.username,
-          birthdate: req.body.datecreate 
-          
+          birthdate: req.body.datecreate,
+          mail : req.body.mail
         });
   
         return res.status(200).send("Add successful");
@@ -78,12 +79,13 @@ router.get("/:id", (req, res) => {
   (async () => {
     try {
       const document = db.collection("users").doc(req.params.id);
-      let product = await document.get();
+      let user = await document.get();
       let response = {
-        id : product.data().id,
-        name: product.data().name,
-        birthdate: product.data().birthdate,
-        isSaler: product.data().isSaler
+        id : user.data().id,
+        name: user.data().name,
+        birthdate: user.data().birthdate,
+        isSaler: user.data().isSaler,
+        mail : user.data().mail
       } 
 
       return res.status(200).send(response);
