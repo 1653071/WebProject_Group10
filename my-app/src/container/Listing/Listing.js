@@ -22,6 +22,7 @@ export default function Listing(props) {
     async function fetchData() {
       // You can await here
       const res = await instance.get("/products");
+      
       const productsRes = res.data;
       console.log(res);
       dispatch({
@@ -35,7 +36,9 @@ export default function Listing(props) {
     fetchData();
   }, []);
   
-  
+  const filter= e =>{
+    console.log('click ', e);
+  };
   return (
     <AppContext.Provider value={{ store, dispatch }}>
       <Row style={{padding:"30px 30px"}}>
@@ -48,11 +51,12 @@ export default function Listing(props) {
             defaultSelectedKeys={["1"]}
             defaultOpenKeys={["sub1"]}
             mode="inline"
+            onClick={filter}
           >
             <SubMenu key="sub1" icon={<MailOutlined />} title="Tất cả sản phẩm">
-              <Menu.ItemGroup key="g1" title="Điện tử">
-                <Menu.Item key="1">Máy tính xách tay</Menu.Item>
-                <Menu.Item key="2">Điện thoại di động</Menu.Item>
+              <Menu.ItemGroup key="g1" title="Điện tử" >
+                <Menu.Item key="hfIXPdIhFVqxS92bCli5">Máy tính xách tay</Menu.Item>
+                <Menu.Item key="nFKDk4PRH3UCmIcfX6JN">Điện thoại di động</Menu.Item>
               </Menu.ItemGroup>
             </SubMenu>
           </Menu>
