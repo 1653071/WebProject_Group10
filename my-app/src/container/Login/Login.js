@@ -27,9 +27,10 @@ export default function Login() {
       if (res.data.authetication) {
         // console.log(res.data.accessToken);
         localStorage.accessToken = res.data.accessToken;
+        localStorage.name = res.data.name;
         localStorage.isLoggin = true;
         const obj = parseJwt(res.data.accessToken);
-        localStorage.todoApp_userId = obj.userId;
+        localStorage.userID = res.data.userID;
 
         // console.log(location.state);
         const retUrl = location.state?.from?.pathname || "/";

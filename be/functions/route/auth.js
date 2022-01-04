@@ -4,7 +4,7 @@ var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 const db = require("../db");
 const randomstring =  require("randomstring");
-router.post("/login", async function (req, res) {
+router.post("/login",function (req, res) {
   (async () => {
     try {
       let username = req.body.username;
@@ -45,6 +45,8 @@ router.post("/login", async function (req, res) {
           const refreshToken = randomstring.generate(80);
           let query1 = db.collection("users").where("username", "==", username);
           res.status(201).json({
+            userID:doc.id,
+            name:doc.data().name,
             authetication: true,
             accessToken,
             refreshToken

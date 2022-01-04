@@ -30,6 +30,7 @@ export default function Listing(props) {
         payload: {
           items: productsRes,
           query: "",
+          category_id:"all"
         },
       });
     }
@@ -37,15 +38,19 @@ export default function Listing(props) {
   }, []);
   
   const filter= e =>{
-    console.log('click ', e);
+    console.log(e.key);
+    dispatch({
+      type: "category_filter",
+      payload: e.key
+    });
+    
   };
   return (
     <AppContext.Provider value={{ store, dispatch }}>
-      <Row style={{padding:"30px 30px"}}>
-         <SearchBar></SearchBar>
-      </Row>
+      
       <Row gutter={24} style={{ width: "100%" }}>
         <Col span={6}>
+          <SearchBar></SearchBar>
           <Menu
             style={{ float: "left" }}
             defaultSelectedKeys={["1"]}
@@ -53,10 +58,13 @@ export default function Listing(props) {
             mode="inline"
             onClick={filter}
           >
-            <SubMenu key="sub1" icon={<MailOutlined />} title="Tất cả sản phẩm">
-              <Menu.ItemGroup key="g1" title="Điện tử" >
-                <Menu.Item key="hfIXPdIhFVqxS92bCli5">Máy tính xách tay</Menu.Item>
-                <Menu.Item key="nFKDk4PRH3UCmIcfX6JN">Điện thoại di động</Menu.Item>
+          <Menu.Item key="all">
+            Tất cả sản phẩm
+          </Menu.Item>
+            <SubMenu key="sub1" icon={<MailOutlined />} title="Điện tử">
+              <Menu.ItemGroup key="g1" >
+                <Menu.Item key="ubd1uVzY10KwruqxM0Uw">Máy tính xách tay</Menu.Item>
+                <Menu.Item key="RuF5yXnJB8FkXgRebGm5">Điện thoại di động</Menu.Item>
               </Menu.ItemGroup>
             </SubMenu>
           </Menu>

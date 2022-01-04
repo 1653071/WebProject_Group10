@@ -10,9 +10,12 @@ import {
   Row,
   Col,
   Checkbox,
+  Upload,
   Button,
   AutoComplete,
-  InputNumber, DatePicker, TimePicker
+  InputNumber,
+  DatePicker,
+  TimePicker,
 } from "antd";
 
 import { instance } from "../../../ultils/ultils";
@@ -37,18 +40,20 @@ const formItemLayoutWithOutLabel = {
   },
 };
 
-
-
 export default function AddProduct() {
   const [form] = Form.useForm();
-  const [name,setName] = useState();
-  const [price,setPrice] = useState();
-  const [pricebuy,setPricebuy] = useState();
-  
-  const [category_id,setCategoryID] = useState();
+  const [name, setName] = useState();
+  const [price, setPrice] = useState();
+  const [pricebuy, setPricebuy] = useState();
+  const [jump, setJump] = useState();
+  const [category_id, setCategoryID] = useState();
+  const [image, setImage] = useState(null);
 
   const name_changed = function (e) {
     setName(e.target.value);
+  };
+  const jump_changed = function (e) {
+    setJump(e.target.value);
   };
   const price_changed = function (e) {
     setPrice(e);
@@ -57,17 +62,18 @@ export default function AddProduct() {
     setPricebuy(e);
   };
 
-  const category_change= function (e) {
+  const category_change = function (e) {
     setCategoryID(e.target.value);
   };
   const onFinish = async function () {
     try {
-      const data = { 
+      const data = {
         name: name,
         price: price,
         pricebuy: pricebuy,
-        category_id:category_id,
-        isAccept: true };
+        category_id: category_id,
+        isAccept: true,
+      };
       const res = await instance.post("/products/add", data);
       if (res.status == 200) {
         const retUrl = location.state?.from?.pathname || "/seller/products";
@@ -81,11 +87,11 @@ export default function AddProduct() {
   };
   const onGenderChange = (value) => {
     switch (value) {
-      case 'hfIXPdIhFVqxS92bCli5':
-        setCategoryID('hfIXPdIhFVqxS92bCli5');
+      case "hfIXPdIhFVqxS92bCli5":
+        setCategoryID("hfIXPdIhFVqxS92bCli5");
         return;
       default:
-        setCategoryID('nFKDk4PRH3UCmIcfX6JN');
+        setCategoryID("nFKDk4PRH3UCmIcfX6JN");
         return;
     }
   };
@@ -97,27 +103,41 @@ export default function AddProduct() {
       name="validate_other"
       {...formItemLayoutWithOutLabel}
       onFinish={onFinish}
+      style={{margin:"60px",boxShadow:"0 6px 20px rgba(0, 0, 0,0.1)",borderRadius:"5px",padding:"60px"}}
     >
-      <Form.Item
-        name="name"
-        label="Tên sản phẩm"
-        rules={[
-          
-          {
-            required: true,
-            message: "Nhập tên sản phẩm",
-          },
-        ]}
-      >
-        <Input onChange={name_changed} />
-      </Form.Item>
+      <Row gutter={24}>
+        <Col span={16}>
+          <Form.Item
+            name="name"
+            label="Tên sản phẩm"
+            rules={[
+              {
+                required: true,
+                message: "Nhập tên sản phẩm",
+              },
+            ]}
+          >
+            <Input onChange={name_changed} />
+          </Form.Item>
+        </Col>
+        <Col span={8}>
+          <Form.Item
+            name="jump"
+            label="Buoc gia"
+            rules={[
+              {
+                required: true,
+                message: "Nhập bước giá",
+              },
+            ]}
+          >
+            <Input onChange={name_changed} />
+          </Form.Item>
+        </Col>
+      </Row>
       <Row gutter={24}>
         <Col span={12}>
-          <Form.Item
-            name="pricebuy"
-            label="Giá mua ngay"
-            
-          >
+          <Form.Item name="pricebuy" label="Giá mua ngay">
             <InputNumber onChange={pricebuy_changed} />
           </Form.Item>
         </Col>
@@ -126,7 +146,6 @@ export default function AddProduct() {
             name="price"
             label="Giá khởi điểm"
             rules={[
-              
               {
                 required: true,
                 message: "Nhập giá khởi điểm",
@@ -137,7 +156,7 @@ export default function AddProduct() {
           </Form.Item>
         </Col>
       </Row>
-     
+
       <Form.Item name="radio-group" label="Gia hạn">
         <Radio.Group>
           <Radio value="true">Có</Radio>
@@ -146,81 +165,25 @@ export default function AddProduct() {
       </Form.Item>
       <Form.Item name="category" label="Select" rules={[{ required: true }]}>
         <Select onChange={onGenderChange}>
-          <Select.Option value="hfIXPdIhFVqxS92bCli5">Máy tính xách tay</Select.Option>
-          <Select.Option value="nFKDk4PRH3UCmIcfX6JN">Điện thoại di động</Select.Option>
+          <Select.Option value="RuF5yXnJB8FkXgRebGm5">
+            Máy tính xách tay
+          </Select.Option>
+          <Select.Option value="nFKDk4PRH3UCmIcfX6JN">
+            Điện thoại di động
+          </Select.Option>
         </Select>
       </Form.Item>
-      <Form.List
-        name="names"
-        rules={[
-          {
-            validator: async (_, names) => {
-              if (!names || names.length < 2) {
-                return Promise.reject(new Error("At least 2 passengers"));
-              }
-            },
-          },
-        ]}
+      <Form.Item
+        name="upload"
+        label="Upload"
+        valuePropName="fileList"
+        
+        
       >
-        {(fields, { add, remove }, { errors }) => (
-          <>
-            {fields.map((field, index) => (
-              <Form.Item
-                {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
-                label={index === 0 ? "Hình ảnh" : ""}
-                required={false}
-                key={field.key}
-              >
-                <Form.Item
-                  {...field}
-                  validateTrigger={["onChange", "onBlur"]}
-                  rules={[
-                    {
-                      required: true,
-                      whitespace: true,
-                      message:
-                        "Please input passenger's name or delete this field.",
-                    },
-                  ]}
-                  noStyle
-                >
-                  <Input
-                    placeholder="passenger name"
-                    style={{ width: "60%" }}
-                  />
-                </Form.Item>
-                {fields.length > 1 ? (
-                  <MinusCircleOutlined
-                    className="dynamic-delete-button"
-                    onClick={() => remove(field.name)}
-                  />
-                ) : null}
-              </Form.Item>
-            ))}
-            <Form.Item>
-              <Button
-                type="dashed"
-                onClick={() => add()}
-                style={{ width: "60%" }}
-                icon={<PlusOutlined />}
-              >
-                Add field
-              </Button>
-              <Button
-                type="dashed"
-                onClick={() => {
-                  add("The head item", 0);
-                }}
-                style={{ width: "60%", marginTop: "20px" }}
-                icon={<PlusOutlined />}
-              >
-                Add field at head
-              </Button>
-              <Form.ErrorList errors={errors} />
-            </Form.Item>
-          </>
-        )}
-      </Form.List>
+        <Upload name="logo" action="/upload.do" listType="picture">
+          <Button>Click to upload</Button>
+        </Upload>
+      </Form.Item>
       <Form.Item>
         <Button type="primary" htmlType="submit">
           Submit

@@ -4,7 +4,7 @@ import { Card } from "antd";
 import { Price, Time } from "./ProductCard.style";
 
 const { Meta } = Card;
-export default function  ProductCard(props) {
+export default function  ProductCard({item}) {
   
   const current = new Date();
  
@@ -20,7 +20,7 @@ export default function  ProductCard(props) {
   return (
     <Card
       hoverable
-      style={{ width: "25%", padding: "10px" }}
+      style={{ width: "100%" , padding: "10px" }}
       cover={
         <img
           alt="example"
@@ -28,8 +28,8 @@ export default function  ProductCard(props) {
         />
       }
     >
-      <Meta />
-      <Price>sad</Price>
+      <Meta title={item.name}/>
+      <Price>{item.price}</Price>
       <Time></Time>
     </Card>
   );
