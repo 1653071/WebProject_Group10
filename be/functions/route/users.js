@@ -15,20 +15,21 @@ router.post('/register',function(req, res) {
     try {
       const document = await db.collection("users").add({
         username: user.username,
-        password: user.password
+        password: user.password,
+        name: user.name,
+        birthdate: user.birthdate,
+        mail:user.mail,
+        isRequest:false,
+        isSeller:false,
+        accessToken:""
+      }).then(()=>{
+        delete user.password;
+        return res.status(200).send(user);
       });
-
-      return res.status(200).send({user});
     } catch (error) {
       return res.status(500).send(error);
     }
   })();
-
-  user = {
-      id: ret[0],
-      ...user
-  }
-  res.status(201).json(user);
 });
 router.get("/", (req, res) => {
     (async () => {
@@ -133,7 +134,7 @@ router.put("/request/:id", (req, res) => {
     try {
       const document = db.collection("users").doc(req.params.id);
       await document.update({
-        request : "Request become seller."
+        isRequest : true
       });
 
       return res.status(200).send();

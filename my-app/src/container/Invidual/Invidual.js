@@ -51,7 +51,7 @@ export default function Invidual() {
       <AvatarWrapper>
         <Avatar size={64} icon={<UserOutlined />} />
         <Name>{date.getDay()}</Name>
-        <Email>@quang</Email>
+        <Email>{localStorage.name}</Email>
         <MenuWrapper>
         <Menu
           defaultSelectedKeys={selectedMenuItem}

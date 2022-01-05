@@ -48,6 +48,7 @@ export default function AddProduct() {
   const [jump, setJump] = useState();
   const [category_id, setCategoryID] = useState();
   const [image, setImage] = useState(null);
+  const [dateend, Setdateend] = useState();
 
   const name_changed = function (e) {
     setName(e.target.value);
@@ -61,9 +62,12 @@ export default function AddProduct() {
   const pricebuy_changed = function (e) {
     setPricebuy(e);
   };
+  const dateend_changed = function (e) {
+    Setdateend(e)
+  };
 
-  const category_change = function (e) {
-    setCategoryID(e.target.value);
+  const category_change = function (value) {
+    setCategoryID(value);
   };
   const onFinish = async function () {
     try {
@@ -72,7 +76,8 @@ export default function AddProduct() {
         price: price,
         pricebuy: pricebuy,
         category_id: category_id,
-        isAccept: true,
+        jump:jump,
+        dateend:dateend
       };
       const res = await instance.post("/products/add", data);
       if (res.status == 200) {
@@ -131,7 +136,7 @@ export default function AddProduct() {
               },
             ]}
           >
-            <Input onChange={name_changed} />
+            <Input onChange={jump_changed} />
           </Form.Item>
         </Col>
       </Row>
@@ -157,6 +162,9 @@ export default function AddProduct() {
         </Col>
       </Row>
 
+      <Form.Item name="dateend" label="Chọn ngày kết thúc">
+           <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" onChange={dateend_changed}/>
+      </Form.Item>
       <Form.Item name="radio-group" label="Gia hạn">
         <Radio.Group>
           <Radio value="true">Có</Radio>
@@ -164,7 +172,7 @@ export default function AddProduct() {
         </Radio.Group>
       </Form.Item>
       <Form.Item name="category" label="Select" rules={[{ required: true }]}>
-        <Select onChange={onGenderChange}>
+        <Select onChange={category_change}>
           <Select.Option value="RuF5yXnJB8FkXgRebGm5">
             Máy tính xách tay
           </Select.Option>

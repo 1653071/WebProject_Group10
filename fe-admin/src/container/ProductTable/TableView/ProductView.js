@@ -1,27 +1,33 @@
 import React, { useState, useContext } from "react";
-import { Table, Button, Drawer, Descriptions, Badge } from "antd";
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Table, Button, Drawer, Descriptions, Badge,Modal } from "antd";
 import ProductContext from "../../../context/ProductContext";
-
+import {instance} from '../../../ultils/ultils'
 export default function TableProduct() {
+  const navigate = useNavigate();
+  const location = useLocation();
   const { store } = useContext(ProductContext);
   const { items, query } = store;
   const [state, setState] = useState({
     product: {},
+    iddelete:null
   });
-  const dataSource = [
-    {
-      key: "1",
-      name: "Mike",
-      age: 32,
-      address: "10 Downing Street",
-    },
-    {
-      key: "2",
-      name: "John",
-      age: 42,
-      address: "10 Downing Street",
-    },
-  ];
+  //Delete modal
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = async () => {
+    const res = await instance.delete(`/products/delete/${state.iddelete}`);
+    const retUrl = location.state?.from?.pathname || '/';
+    navigate(retUrl);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
   const [visible, setVisible] = useState(false);
   const showDrawer = () => {
     setVisible(true);
@@ -63,8 +69,11 @@ export default function TableProduct() {
                 Chi tiết
               </Button>
 
-              <Button shape="circle" type="danger">
-                <i className="ion-android-delete" />
+              <Button shape="round" onClick={() => {
+                  showModal();
+                  state.iddelete = record.id;
+                }} type="danger">
+                Xóa
               </Button>
             </>
           )}
@@ -115,6 +124,9 @@ export default function TableProduct() {
           </Descriptions.Item>
         </Descriptions>
       </Drawer>
+      <Modal title="Xóa sản phẩm" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+              Xác nhận xóa sản phẩm này?
+      </Modal>
     </>
   );
 }

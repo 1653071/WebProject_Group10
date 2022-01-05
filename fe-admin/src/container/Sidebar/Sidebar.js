@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from "react-router-dom"
 import { Menu } from 'antd';
 import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
 
@@ -13,9 +14,11 @@ export default function Sidebar() {
         mode="inline"
       >
         <Menu.Item key="1" icon={<MailOutlined />}>
+            <Link to = "/products"></Link>
             Quản lý sản phẩm
         </Menu.Item>
         <Menu.Item key="2" icon={<MailOutlined />}>
+        <Link to = "/users"></Link>
             Quản lý người dùng
         </Menu.Item>
         <SubMenu key="sub2" icon={<AppstoreOutlined />} title="Navigation Two">

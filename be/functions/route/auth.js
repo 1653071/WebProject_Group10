@@ -47,7 +47,11 @@ router.post("/login",function (req, res) {
           res.status(201).json({
             userID:doc.id,
             name:doc.data().name,
+            birthdate:doc.data().birthdate,
+            mail:doc.data().mail,
+            username:doc.data().username,
             authetication: true,
+            isSeller: doc.data().isSeller,
             accessToken,
             refreshToken
           });

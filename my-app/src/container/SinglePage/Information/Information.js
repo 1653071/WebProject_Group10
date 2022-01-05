@@ -1,6 +1,6 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { Rate } from "antd";
-import { Typography, Button, Row, Col, Input, InputNumber,Modal } from "antd";
+import { Typography, Button, Row, Col, Input, InputNumber, Modal } from "antd";
 import {
   InformationWrapper,
   Contractor,
@@ -16,11 +16,8 @@ import {
   SelectPriceWrapper,
 } from "./Information.style";
 const { Title } = Typography;
-export default function Information({ item }) {
-  
-  const auctionSubmit = ()=>{
-
-  } 
+export default function Information(props) {
+  const auctionSubmit = () => {};
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const showModal = () => {
@@ -31,18 +28,17 @@ export default function Information({ item }) {
     setIsModalVisible(false);
   };
 
-  const handleCancel = () => {  
+  const handleCancel = () => {
     setIsModalVisible(false);
   };
-  const current = new Date();
-  console.log(current);
+
   return (
     <InformationWrapper>
       <Title
         level={4}
         style={{ fontWeight: "bold", color: "#994C00", fontFamily: "Arial" }}
       >
-        {item.name}
+        {props.item.name}
       </Title>
       <AuctionInfo>
         <Row gutter={24} style={{ paddingBottom: "20px" }}>
@@ -74,7 +70,7 @@ export default function Information({ item }) {
         </PriceWrapper>
       </AuctionInfo>
       <Auction>
-        <form onSubmit={auctionSubmit}> 
+        <form onSubmit={auctionSubmit}>
           <SelectPriceWrapper>
             <InputNumber />
           </SelectPriceWrapper>
@@ -83,7 +79,12 @@ export default function Information({ item }) {
           </Button>
         </form>
       </Auction>
-      <Modal title="Basic Modal" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+      <Modal
+        title="Basic Modal"
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
         {`Đồng ý đấu giá với số tiền 1000`}
       </Modal>
     </InformationWrapper>

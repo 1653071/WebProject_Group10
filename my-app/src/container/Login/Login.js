@@ -31,7 +31,10 @@ export default function Login() {
         localStorage.isLoggin = true;
         const obj = parseJwt(res.data.accessToken);
         localStorage.userID = res.data.userID;
-
+        localStorage.birthdate = res.data.birthdate;
+        localStorage.mail = res.data.mail;
+        localStorage.username = res.data.username;
+        localStorage.isSeller = res.data.isSeller;
         // console.log(location.state);
         const retUrl = location.state?.from?.pathname || "/";
         navigate(retUrl);

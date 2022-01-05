@@ -1,36 +1,28 @@
 import React,{useState,useEffect} from "react";
-import { useLocation } from 'react-router-dom'
+import {Link } from 'react-router-dom'
 import { Card } from "antd";
 import { Price, Time } from "./ProductCard.style";
-
+import { SmileTwoTone, HeartTwoTone, CheckCircleTwoTone } from '@ant-design/icons';
 const { Meta } = Card;
 export default function  ProductCard({item}) {
-  
-  const current = new Date();
- 
-  
-  
-  const [time,setTime] = useState(Date.now());
-  useEffect(() => {
-    const interval = setInterval(() => setTime(Date.now()), 1000);
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
   return (
     <Card
       hoverable
-      style={{ width: "100%" , padding: "10px" }}
+      style={{ width: "100%"  }}
       cover={
         <img
           alt="example"
-          src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
+          src={item.image[0]}
+          height={300}
+    
         />
+        
       }
     >
-      <Meta title={item.name}/>
+      <Meta title={item.name} style={{fontWeight:"600", marginTop:"10px"}}/>
       <Price>{item.price}</Price>
       <Time></Time>
+      <Link to={`/listing/${item.id}`} state={{item1:item}}>Dau961 gia1</Link>
     </Card>
   );
 }

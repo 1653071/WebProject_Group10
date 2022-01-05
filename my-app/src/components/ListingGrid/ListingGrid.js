@@ -27,10 +27,10 @@ export default function ListingGrid(props) {
           })
           .map(function (item) {
             return (
-              <Col className="gutter-row" span={6}>
-                <Link to={`/listing/${item.id}`} state={{ item: item }}>
+              <Col key={item.id} className="gutter-row" span={6}>
+               
                   <ProductCard key={item.id} item={item}/>
-                </Link>
+               
               </Col>
             );
           })}

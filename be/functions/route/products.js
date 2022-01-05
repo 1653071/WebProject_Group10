@@ -20,7 +20,9 @@ router.get("/", (req, res) => {
               jump : doc.data().jump,
               datecreated: doc.data().datecreate,
               dateend: doc.data().dateend,
-              category_id: doc.data().category_id
+              category_id: doc.data().category_id,
+              image:doc.data().image,
+              description:doc.data().description
             };
             response.push(selectedItem);
           }
@@ -63,7 +65,8 @@ router.post("/add", (req, res) => {
         sellerId : req.body.sellerId,
         jump : req.body.jump,
         datecreate : req.body.datecreate,
-        dateend :req.body.dateend
+        dateend :req.body.dateend,
+        
       });
 
       return res.status(200).send("Add successful");

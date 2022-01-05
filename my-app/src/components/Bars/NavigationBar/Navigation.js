@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { useNavigate  ,useLocation,Link } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { Avatar, Menu, Dropdown } from "antd";
 import { Button, Modal, Form, Input, Checkbox } from "antd";
 import { instance, parseJwt } from "../../../ultils/ultils";
@@ -11,20 +11,19 @@ import {
   Cart,
   List,
   AvatarWrapper,
-  Seller
+  Seller,
 } from "./Navigation.style";
 import { UserOutlined } from "@ant-design/icons";
 import {
   ShoppingCartOutlined,
   OrderedListOutlined,
   DownOutlined,
-  DollarOutlined 
-
+  DollarOutlined,
 } from "@ant-design/icons";
 
 export default function Navigation() {
   const navigate = useNavigate();
- 
+
   const location = useLocation();
   const [username, Setusername] = useState("");
   const [password, Setpassword] = useState("");
@@ -40,11 +39,7 @@ export default function Navigation() {
   const menu = (
     <Menu>
       <Menu.Item>
-        <Link
-          to="/invidual"
-        >
-          Thông tin cá nhân
-        </Link>
+        <Link to="/invidual">Thông tin cá nhân</Link>
       </Menu.Item>
       <Menu.Item>
         <a
@@ -55,20 +50,25 @@ export default function Navigation() {
           Lịch sử đấu giá
         </a>
       </Menu.Item>
-      
-      <Menu.Item onClick={()=>{
-         delete localStorage.accessToken;
-         delete localStorage.name;
-         delete localStorage.isLoggin
-         delete localStorage.userID
-        navigate('/login');
-      }} danger>Logout</Menu.Item>
+
+      <Menu.Item
+        onClick={() => {
+          delete localStorage.accessToken;
+          delete localStorage.name;
+          delete localStorage.isLoggin;
+          delete localStorage.userID;
+          navigate("/login");
+        }}
+        danger
+      >
+        Logout
+      </Menu.Item>
     </Menu>
   );
- 
+
   const [isModalSignInVisible, setIsModalSignInVisible] = useState(false);
   const [isModalSignUpVisible, setIsModalSignUpVisible] = useState(false);
-  
+
   const showModal = () => {
     setIsModalSignInVisible(true);
   };
@@ -102,6 +102,9 @@ export default function Navigation() {
         localStorage.isLoggin = true;
         const obj = parseJwt(res.data.accessToken);
         localStorage.userID = res.data.userID;
+        localStorage.birthdate = res.data.birthdate;
+        localStorage.mail = res.data.mail;
+        localStorage.username = res.data.username;
 
         // console.log(location.state);
         const retUrl = location.state?.from?.pathname || "/";
@@ -114,7 +117,7 @@ export default function Navigation() {
     }
   };
   return (
-    <NavigationWrapper >
+    <NavigationWrapper>
       <Menu
         mode="horizontal"
         style={{ backgroundColor: "#8d5524", width: "60%" }}
@@ -164,7 +167,6 @@ export default function Navigation() {
             visible={isModalSignInVisible}
             onOk={handleOk}
             onCancel={handleCancel}
-            
           >
             <Form
               name="basic"
@@ -261,12 +263,33 @@ export default function Navigation() {
       ) : (
         <AuthWrapper>
           <Seller>
-          <DollarOutlined
-          theme="filled"
-          twoToneColor="#eb2f96"
-          style={{ color: "white", fontSize: "16px", fontWeight: "900" }} />
-           
-          <Link to="/seller"><p className="seller-text">Kênh bán hàng</p></Link>
+            <DollarOutlined
+              theme="filled"
+              twoToneColor="#eb2f96"
+              style={{ color: "white", fontSize: "16px", fontWeight: "900" }}
+            />
+
+            {localStorage.isSeller === true ? (
+              <Link to="/seller">
+                <p className="seller-text">Kênh bán hàng</p>
+              </Link>
+            ) : (
+              <p
+                className="seller-text"
+                onClick={async () => {
+                  const res = await instance
+                    .put(`/users/request/${localStorage.userID}`)
+                    .then(() => {
+                      alert("Thành công");
+                    })
+                    .catch(() => {
+                      alert("Không thành công");
+                    });
+                }}
+              >
+                Duyệt thành người bán
+              </p>
+            )}
           </Seller>
           <Cart>
             <ShoppingCartOutlined
@@ -285,16 +308,14 @@ export default function Navigation() {
             <p className="cart-text">Yêu thích</p>
           </List>
           <Dropdown overlay={menu}>
-          <AvatarWrapper>
-            
+            <AvatarWrapper>
               <Avatar
                 size={24}
                 style={{ backgroundColor: "#87d068" }}
                 icon={<UserOutlined />}
               ></Avatar>
               <p className="name">Xin chào, {localStorage.name}</p>
-           
-          </AvatarWrapper>
+            </AvatarWrapper>
           </Dropdown>
         </AuthWrapper>
       )}
