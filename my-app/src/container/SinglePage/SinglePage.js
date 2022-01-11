@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import ProductImage from "./ProductImage/ProductImage";
 import {
@@ -13,12 +13,18 @@ import { Image, Row, Col } from "antd";
 import Seller from "./Seller/Seller";
 import RelateProduct from "./RelateProduct/RelateProduct";
 import History from "./History/History";
+import { instance } from "../../ultils/ultils";
 export default function SinglePage(props) {
   const location = useLocation();
   const { item1 } = location.state;
+  const [usersauction, setUserauction] = useState([]);
   useEffect(() => {
-    
-  }, [])
+    const fetchUser = async () => {
+      const res_user = await instance(`/auction/product/${item1.id}`);
+      setUserauction(res_user.data);
+    };
+    fetchUser();
+  }, []);
   return (
     <SinglePageWrapper>
       <Container>
@@ -53,9 +59,9 @@ export default function SinglePage(props) {
       </Container>
       <ProductDetail>
         <Seller />
-        <Description description= {item1.description}/>
+        <Description description={item1.description} />
 
-        <History></History>
+        <History user={usersauction}></History>
       </ProductDetail>
     </SinglePageWrapper>
   );

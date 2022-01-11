@@ -14,7 +14,9 @@ export default function GridProduct(props) {
       
       <Row justify="center" gutter={16}>
         {
-          items.map((item) =>(
+          items.sort((first, second) => {
+            return first.price < second.price ? 1 : -1;
+          }).filter((item) => Date.parse(item.dateend)< Date.now()).slice(0,5).map((item) =>(
           <Col className="gutter-row" span={4}>
             <ProductCard item={item} key={item.id} />
           </Col>

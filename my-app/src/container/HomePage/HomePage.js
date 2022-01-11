@@ -49,7 +49,7 @@ useEffect(() => {
       </Banner>
       
       <ProductArea>
-      <GridProduct title = "Sản phẩm sắp hết phiên" />
+      <GridProduct filter={"highestprice"} title = "Sản phẩm sắp hết phiên" />
       <GridProduct title = "Sản phẩm được ra giá nhiều nhất"/>
       <GridProduct title = "Sản phẩm có giá cao nhất"/>
       </ProductArea>

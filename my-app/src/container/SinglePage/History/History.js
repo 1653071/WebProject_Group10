@@ -4,26 +4,18 @@ import { Typography } from "antd";
 
 import { HistoryContent, HistoryWrapper } from "./History.style";
 const { Title } = Typography;
-export default function History() {
-  const dataSource = [
-    {
-      key: "1",
-      time: "12-12-2011",
-      bidder:"Quang",
-      price: "10000000",
-    },
-    
-  ];
-
+export default function History({user}) {
+  
+  console.log(user);
   const columns = [
     {
       title: "Thời điểm",
-      dataIndex: "time",
+      dataIndex: "datecreate",
       key: "time",
     },
     {
       title: "Người mua",
-      dataIndex: "bidder",
+      dataIndex: "userId",
       key: "bidder",
     },
     {
@@ -38,7 +30,9 @@ export default function History() {
         Người đã ra giá
       </Title>
       <HistoryContent>
-        <Table dataSource={dataSource} columns={columns} />
+        <Table dataSource={user.sort((first, second) => {
+            return first.price < second.price ? 1 : -1;
+          })} columns={columns} />
       </HistoryContent>
     </HistoryWrapper>
   );

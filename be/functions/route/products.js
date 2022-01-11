@@ -2,8 +2,11 @@ const { response } = require("express");
 const express = require("express");
 const router = express.Router();
 const db = require("../db");
-
+const auth  = require("../middleware/auth.js")
+const authadmin  = require("../middleware/authadmin.js")
 //Get all San Pham
+
+
 router.get("/", (req, res) => {
     (async () => {
       try {
@@ -22,7 +25,8 @@ router.get("/", (req, res) => {
               dateend: doc.data().dateend,
               category_id: doc.data().category_id,
               image:doc.data().image,
-              description:doc.data().description
+              description:doc.data().description,
+              sellerId : doc.data().sellerId,
             };
             response.push(selectedItem);
           }
@@ -77,7 +81,7 @@ router.post("/add", (req, res) => {
 });
 
 //update
-router.put("/update/:id", (req, res) => {
+router.put("/update/:id",authadmin, (req, res) => {
   (async () => {
     try {
       const document = db.collection("products").doc(req.params.id);
@@ -102,7 +106,7 @@ router.put("/update/:id", (req, res) => {
 });
 
 //Delete
-router.delete("/delete/:id", (req, res) => {
+router.delete("/delete/:id",authadmin, (req, res) => {
   (async () => {
     try {
       const document = db.collection("products").doc(req.params.id);

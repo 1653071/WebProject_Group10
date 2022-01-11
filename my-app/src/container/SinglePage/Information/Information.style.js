@@ -13,7 +13,7 @@ export const AuctionInfo= styled.div`
      padding-bottom: 10px;
 
 `;
-export const Date= styled.div`
+export const DateWrapper= styled.div`
     color:black;
     font-weight:600;
    
