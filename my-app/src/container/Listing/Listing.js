@@ -20,7 +20,7 @@ export default function Listing(props) {
   const [store, dispatch] = useReducer(reducer, initialState);
   useEffect(() => {
     async function fetchData() {
-      // You can await here
+      
       const res = await instance.get("/products");
       
       const productsRes = res.data;

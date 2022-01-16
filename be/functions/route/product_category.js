@@ -2,7 +2,29 @@ const { response } = require("express");
 const express = require("express");
 const router = express.Router();
 const db = require("../db");
-
+router.get("/", (req, res) => {
+    (async () => {
+        try {
+          let query = db.collection("product_categories");
+          let response = [];
+          await query.get().then((querySnapShot) => {
+            let docs = querySnapShot.docs;
+            for (let doc of docs) {
+              const selectedItem = {
+                id: doc.id,
+                name: doc.data().name,
+                
+              };
+              response.push(selectedItem);
+            }
+            return response;
+          });
+          return res.status(200).send(response);
+        } catch (error) {
+          return res.status(500).send(error);
+        }
+      })();
+});
 //Create
 router.post("/add", (req, res) => {
     (async () => {

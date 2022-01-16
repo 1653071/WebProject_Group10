@@ -1,5 +1,10 @@
 import React, { useState ,useEffect} from "react";
-
+import {
+  SmileTwoTone,
+  HeartTwoTone,
+  CheckCircleTwoTone,
+  LikeOutlined,
+} from "@ant-design/icons";
 import { Typography, Button, Row, Col, Input, InputNumber, Modal } from "antd";
 import {
   InformationWrapper,
@@ -47,6 +52,7 @@ export default function Information(props) {
       userId: localStorage.userID,
       sellerId: props.item.sellerId,
       datecreate: `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
+      name:localStorage.name
     }
     await instance.post(`/auction/add`,payload).then((res)=>{
         if(res.status === 200){
@@ -60,14 +66,37 @@ export default function Information(props) {
   const onChangePrice = e => {
     SetPriceAuction(e);
   };
+  const addToWatchList = async () => {
+    const data = {
+      productId: props.item.id,
+      userId: localStorage.userID,
+    };
+    const res = await instance.post("watchlist/add", data);
+    if (res.status === 200) {
+      alert("Them thành công");
+    } else {
+      alert("Thêm thất bại");
+    }
+  };
   return (
     <InformationWrapper>
-      <Title
+      <Row gutter={24}>
+        <Col span={20}><Title
         level={4}
         style={{ fontWeight: "bold", color: "#994C00", fontFamily: "Arial" }}
       >
         {props.item.name}
-      </Title>
+      </Title></Col>
+      <Col span={4}>
+      <Button
+          type="primary"
+          shape="circle"
+          onClick={addToWatchList}
+          icon={<LikeOutlined></LikeOutlined>}
+        >
+       
+        </Button></Col>
+      </Row>
       <AuctionInfo>
         <Row gutter={24} style={{ paddingBottom: "20px" }}>
           <Col span={8}>Thời gian</Col>
@@ -76,10 +105,19 @@ export default function Information(props) {
           </Col>
         </Row>
         <Row gutter={24}>
-          <Col span={8}>Còn lại</Col>
-          <Col span={16}>
-            <Time>{Math.floor(time / 86400000)} ngày {Math.floor((time % 86400000) / 3600000)} : {Math.floor(((time % 86400000) % 3600000) / 60000)}: {Math.floor(((time % 86400000)%60000)/1000)}</Time>
-          </Col>
+          {Date.parse(props.item.dateend) > Date.now() ? (
+            <>
+            <Col span={8}>Còn lại</Col>
+            <Col span={16}>
+              <Time>{Math.floor(time / 86400000)} ngày {Math.floor((time % 86400000) / 3600000)} : {Math.floor(((time % 86400000) % 3600000) / 60000)}: {Math.floor(((time % 86400000)%60000)/1000)}</Time>
+            </Col>
+            </>
+          ):(
+            <><Col span={8}>Còn lại</Col>
+            <Col span={16}>
+            <Time>Hết hạn</Time>
+          </Col></>
+          )}
         </Row>
         
 

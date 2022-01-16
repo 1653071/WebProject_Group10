@@ -2,6 +2,7 @@ const { response } = require("express");
 const express = require("express");
 const router = express.Router();
 const db = require("../db");
+const events =  require("events")
 const auth  = require("../middleware/auth.js")
 const authadmin  = require("../middleware/authadmin.js")
 //Get all San Pham
@@ -38,7 +39,38 @@ router.get("/", (req, res) => {
       }
     })();
 });
-
+//Get san pham theo id seller
+router.get("/seller/:id", (req, res) => {
+  (async () => {
+    try {
+      let query = db.collection("products").where("sellerId","==",req.params.id);
+      let response = [];
+      await query.get().then((querySnapShot) => {
+        let docs = querySnapShot.docs;
+        for (let doc of docs) {
+          const selectedItem = {
+            id: doc.id,
+            name: doc.data().name,
+            price: doc.data().price,
+            pricebuy: doc.data().pricebuy,
+            jump : doc.data().jump,
+            datecreated: doc.data().datecreate,
+            dateend: doc.data().dateend,
+            category_id: doc.data().category_id,
+            image:doc.data().image,
+            description:doc.data().description,
+            sellerId : doc.data().sellerId,
+          };
+          response.push(selectedItem);
+        }
+        return response;
+      });
+      return res.status(200).send(response);
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  })();
+});
 //Get san phan theo ID
 router.get("/:id", (req, res) => {
   (async () => {
@@ -70,12 +102,13 @@ router.post("/add", (req, res) => {
         jump : req.body.jump,
         datecreate : req.body.datecreate,
         dateend :req.body.dateend,
+        picture:req.body.picture
         
       });
 
       return res.status(200).send("Add successful");
     } catch (error) {
-      return res.status(500).send(error);
+      
     }
   })();
 });

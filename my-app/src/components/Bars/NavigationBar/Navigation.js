@@ -105,7 +105,7 @@ export default function Navigation() {
         localStorage.birthdate = res.data.birthdate;
         localStorage.mail = res.data.mail;
         localStorage.username = res.data.username;
-
+        localStorage.isSeller = res.data.isSeller;
         // console.log(location.state);
         const retUrl = location.state?.from?.pathname || "/";
         navigate(retUrl);
@@ -269,7 +269,7 @@ export default function Navigation() {
               style={{ color: "white", fontSize: "16px", fontWeight: "900" }}
             />
 
-            {localStorage.isSeller === true ? (
+            {(localStorage.isSeller) ? (
               <Link to="/seller">
                 <p className="seller-text">Kênh bán hàng</p>
               </Link>

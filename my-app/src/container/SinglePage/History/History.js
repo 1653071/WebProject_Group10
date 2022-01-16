@@ -4,8 +4,7 @@ import { Typography } from "antd";
 
 import { HistoryContent, HistoryWrapper } from "./History.style";
 const { Title } = Typography;
-export default function History({user}) {
-  
+export default function History({ user }) {
   console.log(user);
   const columns = [
     {
@@ -15,8 +14,11 @@ export default function History({user}) {
     },
     {
       title: "Người mua",
-      dataIndex: "userId",
+      dataIndex: "name",
       key: "bidder",
+      render: (e) => {
+        return "****" + e.substring(Math.floor(e.length/2),0);
+      },
     },
     {
       title: "Giá",
@@ -30,9 +32,12 @@ export default function History({user}) {
         Người đã ra giá
       </Title>
       <HistoryContent>
-        <Table dataSource={user.sort((first, second) => {
+        <Table
+          dataSource={user.sort((first, second) => {
             return first.price < second.price ? 1 : -1;
-          })} columns={columns} />
+          })}
+          columns={columns}
+        />
       </HistoryContent>
     </HistoryWrapper>
   );

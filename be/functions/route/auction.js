@@ -15,11 +15,13 @@ router.get("/product/:productID", (req, res) => {
           let docs = querySnapShot.docs;
           for (let doc of docs) {
             const selectedItem = {
+              id:doc.id,
               productId:doc.data().productId,
               sellerId: doc.data().sellerId,
               userId: doc.data().userId,
               price : doc.data().price,
-              datecreate : doc.data().datecreate
+              datecreate : doc.data().datecreate,
+              name:doc.data().name
             };
             response.push(selectedItem);
           }
@@ -53,7 +55,8 @@ router.post("/add", (req, res) => {
               price : req.body.price,
               productId : req.body.productId,
               sellerId : req.body.sellerId,
-              userId : req.body.userId  
+              userId : req.body.userId,
+              name:req.body.name
           });
             return res.status(200).send("Add successful");
           } else {
@@ -87,7 +90,7 @@ router.get("/user/:ID", (req, res) => {
           };
           response.push(selectedItem);
         }
-        return response;
+        return res.status(200).send(response);
       });
       return res.status(200).send(response);
     } catch (error) {
@@ -95,6 +98,16 @@ router.get("/user/:ID", (req, res) => {
     }
   })();
 });
-
+router.delete("/delete/:id", (req, res) => {
+  (async () => {
+    try {
+      const document = db.collection("auction").doc(req.params.id);
+      await document.delete();
+      return res.status(200).send();
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  })();
+});
 
 module.exports = router;

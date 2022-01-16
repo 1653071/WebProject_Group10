@@ -96,7 +96,35 @@ router.get("/:id", (req, res) => {
     }
   })();
 });
-  
+router.put("/changepassword/:id", (req, res) => {
+  (async () => {
+    try {
+        const document = db.collection("users").doc(req.params.id);
+        let user = await document.get().then(async (res1)=>{
+        console.log(res1.data().password);
+        let password = res1.data().password;
+        const check =bcrypt.compareSync(req.body.currentpassword, password); 
+        console.log(check);
+        if(check === true){
+          let changepassword = req.body.changepassword;
+          const hashchangepass = bcrypt.hashSync(changepassword, 10);
+          const document1 = db.collection("users").doc(req.params.id);
+          await document1.update({
+            password: hashchangepass,
+          });
+          return res.status(200).send({"message":"Thanh cong"})
+        }
+        else{
+          return res.status(400).send({"message":"That bai"})
+        }
+      });
+      return res.status(200).send({message:"Thanh cong"})
+     
+    } catch (error) {
+      
+    }
+  })();
+});
 //Update User by id
 router.put("/update/:id", (req, res) => {
   (async () => {
@@ -104,9 +132,9 @@ router.put("/update/:id", (req, res) => {
       const document = db.collection("users").doc(req.params.id);
       await document.update({
         name: req.body.name,
-        birthdate: req.body.birthdate,
+        
       });
-      return res.status(200).send();
+      return res.status(200).send({"message":"Thanh cong"});
     } catch (error) {
       return res.status(500).send(error);
     }

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-export const ProfileWrapper = styled.div`
+export const AuctionWrapper = styled.div`
      padding: 50px;
    
      width: 100%;

@@ -22,7 +22,7 @@ router.post("/login",function (req, res) {
           };
           response = selectedItem;
 
-          return response;
+          return res.status(401).send(response);
         }
         for (let doc of docs) {
           if (bcrypt.compareSync(password, doc.data().password) == false) {
@@ -58,13 +58,13 @@ router.post("/login",function (req, res) {
 
         }
 
-        return response;
+        return res.status(200).send(response);
       });
 
       return res.status(200).send(response);
     } catch (error) {
       console.log(error);
-      return res.status(500).send(error);
+     
     }
   })();
 });

@@ -4,3 +4,6 @@ export const WatchListWrapper = styled.div`
    
      width: 100%;
 `;
+export const Title = styled.div`
+    text-align:left;
+`;
