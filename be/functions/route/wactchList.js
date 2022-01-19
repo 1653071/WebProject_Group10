@@ -7,7 +7,7 @@ const db = require("../db");
 router.post("/add", (req, res) => {
     (async () => {
         try {
-            const check = db.collection("watchlist").where('state', '>=', 'CA').where('state', '<=', 'IN').get();
+            const check = await db.collection("watchlist").where('productId', '==', req.body.productId).where('userId', '==', req.body.userId).get();
             if (check.empty) {
                 const document = await db.collection("watchlist").add({
                     productId:req.body.productId,
@@ -17,7 +17,7 @@ router.post("/add", (req, res) => {
                 return res.status(200).send("Add successful");
             }
             else{
-                return res.status(400).send("Have in watch list");
+                return res.status(204).send("Have in watch list");
             }  
             
         } catch (error) {

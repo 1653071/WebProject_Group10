@@ -11,20 +11,28 @@ import {
 import { Input, Space } from 'antd';
 import SearchBar from "../../components/SearchBar/SearchBar";
 import reducer , {initialState} from '../../reducer/ProductReducer'
-
+import cateReducer , {initialStateCate} from '../../reducer/ProductCategoryReducer'
 const { Search } = Input;
 const { SubMenu } = Menu;
 export default function Listing(props) {
 
   
   const [store, dispatch] = useReducer(reducer, initialState);
+  const [storeCategory, dispatchCategory] = useReducer(cateReducer, initialStateCate);
   useEffect(() => {
     async function fetchData() {
       
       const res = await instance.get("/products");
-      
+      const cateRes = await instance.get("/product_category")
       const productsRes = res.data;
       console.log(res);
+      dispatchCategory({
+        type: "init",
+        payload: {
+          categories: cateRes.data,
+          
+        },
+      });
       dispatch({
         type: "init",
         payload: {
@@ -63,8 +71,10 @@ export default function Listing(props) {
           </Menu.Item>
             <SubMenu key="sub1" icon={<MailOutlined />} title="Điện tử">
               <Menu.ItemGroup key="g1" >
-                <Menu.Item key="ubd1uVzY10KwruqxM0Uw">Máy tính xách tay</Menu.Item>
-                <Menu.Item key="RuF5yXnJB8FkXgRebGm5">Điện thoại di động</Menu.Item>
+                {storeCategory.categories.map(function(item){
+                  return <Menu.Item key={item.id}>{item.name}</Menu.Item>
+                })}
+               
               </Menu.ItemGroup>
             </SubMenu>
           </Menu>

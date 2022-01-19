@@ -34,11 +34,7 @@ export default function SearchBar(props) {
             style={{ width: "100%" }}
           />
         </Col>
-        <Col span={4}>
-          <button type="button" onClick={btnClear_Clicked}>
-            Clear
-          </button>
-        </Col>
+        
       </Row>
     </>
   );

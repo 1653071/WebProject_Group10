@@ -49,9 +49,9 @@ useEffect(() => {
       </Banner>
       
       <ProductArea>
-      <GridProduct filter={"highestprice"} title = "Sản phẩm sắp hết phiên" />
-      <GridProduct title = "Sản phẩm được ra giá nhiều nhất"/>
-      <GridProduct title = "Sản phẩm có giá cao nhất"/>
+      <GridProduct key="1" filter={"highestprice"} title = "Sản phẩm có giá cao nhất" />
+      <GridProduct key="2" filter={"highestauction"} title = "Sản phẩm được ra giá nhiều nhất"/>
+      <GridProduct key="3" filter={"expired"} title = "Sản phẩm gần hết phiên"/>
       </ProductArea>
     </AppContext.Provider>
   );

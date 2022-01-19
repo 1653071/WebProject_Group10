@@ -20,6 +20,7 @@ import {
   DownOutlined,
   DollarOutlined,
 } from "@ant-design/icons";
+import RegisterForm from "./RegisterForm/RegisterForm";
 
 export default function Navigation() {
   const navigate = useNavigate();
@@ -57,7 +58,7 @@ export default function Navigation() {
           delete localStorage.name;
           delete localStorage.isLoggin;
           delete localStorage.userID;
-          navigate("/login");
+          navigate("/");
         }}
         danger
       >
@@ -217,47 +218,7 @@ export default function Navigation() {
             onOk={handleOkSignUp}
             onCancel={handleCancelSignUp}
           >
-            <Form
-              name="basic"
-              labelCol={{ span: 8 }}
-              wrapperCol={{ span: 16 }}
-              initialValues={{ remember: true }}
-              autoComplete="off"
-            >
-              <Form.Item
-                label="Username"
-                name="username"
-                rules={[
-                  { required: true, message: "Please input your username!" },
-                ]}
-              >
-                <Input />
-              </Form.Item>
-
-              <Form.Item
-                label="Password"
-                name="password"
-                rules={[
-                  { required: true, message: "Please input your password!" },
-                ]}
-              >
-                <Input.Password />
-              </Form.Item>
-
-              <Form.Item
-                name="remember"
-                valuePropName="checked"
-                wrapperCol={{ offset: 8, span: 16 }}
-              >
-                <Checkbox>Remember me</Checkbox>
-              </Form.Item>
-
-              <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                <Button type="primary" htmlType="submit">
-                  Submit
-                </Button>
-              </Form.Item>
-            </Form>
+            <RegisterForm/>
           </Modal>
         </AuthWrapper>
       ) : (
@@ -291,22 +252,8 @@ export default function Navigation() {
               </p>
             )}
           </Seller>
-          <Cart>
-            <ShoppingCartOutlined
-              theme="filled"
-              twoToneColor="#eb2f96"
-              style={{ color: "white", fontSize: "16px", fontWeight: "900" }}
-            />
-            <p className="cart-text">Giỏ hàng</p>
-          </Cart>
-          <List>
-            <OrderedListOutlined
-              theme="filled"
-              twoToneColor="#eb2f96"
-              style={{ color: "white", fontSize: "16px", fontWeight: "900" }}
-            />
-            <p className="cart-text">Yêu thích</p>
-          </List>
+          
+          
           <Dropdown overlay={menu}>
             <AvatarWrapper>
               <Avatar

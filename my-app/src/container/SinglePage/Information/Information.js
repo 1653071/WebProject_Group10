@@ -45,6 +45,9 @@ export default function Information(props) {
     setIsModalVisible(false);
   };
   const auctionClick = async () =>{
+    if(!localStorage.accessToken){
+      return alert("Đăng nhập để đấu giá");
+    }
     const date = new Date();
     const payload= {
       productId:props.item.id,
@@ -74,7 +77,7 @@ export default function Information(props) {
     const res = await instance.post("watchlist/add", data);
     if (res.status === 200) {
       alert("Them thành công");
-    } else {
+    } else if (res.status === 204) {
       alert("Thêm thất bại");
     }
   };
@@ -122,18 +125,18 @@ export default function Information(props) {
         
 
         <ContractorWrapper>
-          <HeadTitle>Người ra giá cao nhất</HeadTitle>
-          <Contractor>quang.work</Contractor>
+          <HeadTitle>Giá khởi điểm</HeadTitle>
+          <Contractor>{props.item.price}</Contractor>
         </ContractorWrapper>
         <PriceWrapper>
-          <HeadTitle>Giá thầu</HeadTitle>
-          <Price>120000</Price>
+          <HeadTitle>Giá cao nhất hiện tại</HeadTitle>
+          <Price>{props.item.price}</Price>
         </PriceWrapper>
       </AuctionInfo>
       <Auction>
         <form onSubmit={auctionSubmit}>
           <SelectPriceWrapper>
-            <InputNumber onChange={onChangePrice} />
+            <InputNumber onChange={onChangePrice} defaultValue={props.item.price} step={props.item.jump} />
           </SelectPriceWrapper>
           <Button  className="auction" onClick={auctionClick}>
             Đấu giá

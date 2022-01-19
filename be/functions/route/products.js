@@ -5,6 +5,7 @@ const db = require("../db");
 const events =  require("events")
 const auth  = require("../middleware/auth.js")
 const authadmin  = require("../middleware/authadmin.js")
+var admin = require('firebase-admin');
 //Get all San Pham
 
 
@@ -102,7 +103,7 @@ router.post("/add", (req, res) => {
         jump : req.body.jump,
         datecreate : req.body.datecreate,
         dateend :req.body.dateend,
-        picture:req.body.picture
+        image:req.body.picture
         
       });
 
@@ -112,7 +113,23 @@ router.post("/add", (req, res) => {
     }
   })();
 });
+router.put("/updatedescription/:id", (req, res) => {
+  (async () => {
+    try {
+      const document = db.collection("products").doc(req.params.id);
 
+      await document.update({
+        
+        description :admin.firestore.FieldValue.arrayUnion(req.body.description)
+        
+      });
+
+      return res.status(200).send("Success");
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  })();
+});
 //update
 router.put("/update/:id",authadmin, (req, res) => {
   (async () => {

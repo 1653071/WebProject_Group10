@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useReducer, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { AddProductWrapper } from "./AddProduct.style";
 import {
@@ -9,20 +9,17 @@ import {
   Select,
   Row,
   Col,
-  Checkbox,
-  Upload,
   Button,
-  AutoComplete,
   InputNumber,
   DatePicker,
-  TimePicker,
 } from "antd";
 import { storage } from "../../../firebase/firebase";
 import { instance } from "../../../ultils/ultils";
-
+import cateReducer, {
+  initialStateCate,
+} from "../../../reducer/ProductCategoryReducer";
 const { RangePicker } = DatePicker;
-const { TextArea } = Input;
-const { Option } = Select;
+
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -41,6 +38,24 @@ const formItemLayoutWithOutLabel = {
 };
 
 export default function AddProduct() {
+  const [storeCategory, dispatchCategory] = useReducer(
+    cateReducer,
+    initialStateCate
+  );
+  useEffect(() => {
+    async function fetchData() {
+      const cateRes = await instance.get("/product_category");
+
+      dispatchCategory({
+        type: "init",
+        payload: {
+          categories: cateRes.data,
+        },
+      });
+    }
+    fetchData();
+  }, []);
+
   const [form] = Form.useForm();
   const [name, setName] = useState();
   const [price, setPrice] = useState();
@@ -96,7 +111,7 @@ export default function AddProduct() {
   const category_change = function (value) {
     setCategoryID(value);
   };
-  function handleUpload() {
+  function handleUpload(e) {
     const uploadTask = storage.ref(`images/${image.name}`).put(image);
     uploadTask.on(
       "state_changed",
@@ -109,21 +124,20 @@ export default function AddProduct() {
       (error) => {
         console.log(error);
       },
-       () => {
+      () => {
         storage
-            .ref("images")
-            .child(image.name)
-            .getDownloadURL().then((url) => {
-              setUrl(url);
-              console.log(url)
-              return url;
-            });
-            
-        
+          .ref("images")
+          .child(image.name)
+          .getDownloadURL()
+          .then((url) => {
+            setUrl(url);
+            console.log(url);
+            return url;
+          });
       }
     );
-  };
-  function handleUpload1() {
+  }
+  function handleUpload1(e) {
     const uploadTask = storage.ref(`images/${image1.name}`).put(image1);
     uploadTask.on(
       "state_changed",
@@ -136,21 +150,20 @@ export default function AddProduct() {
       (error) => {
         console.log(error);
       },
-       () => {
+      () => {
         storage
-            .ref("images")
-            .child(image1.name)
-            .getDownloadURL().then((url) => {
-              setUrl1(url);
-              console.log(url)
-              return url;});
-              
-            
-        
+          .ref("images")
+          .child(image1.name)
+          .getDownloadURL()
+          .then((url) => {
+            setUrl1(url);
+            console.log(url);
+            return url;
+          });
       }
     );
-  };
-  function handleUpload2() {
+  }
+  function handleUpload2(e) {
     const uploadTask = storage.ref(`images/${image2.name}`).put(image2);
     uploadTask.on(
       "state_changed",
@@ -163,26 +176,104 @@ export default function AddProduct() {
       (error) => {
         console.log(error);
       },
-       () => {
+      () => {
         storage
-            .ref("images")
-            .child(image2.name)
-            .getDownloadURL().then((url) => {
-              setUrl2(url);
-              console.log(url)
-              return url;});
-            
-        
+          .ref("images")
+          .child(image2.name)
+          .getDownloadURL()
+          .then((url) => {
+            setUrl2(url);
+            console.log(url);
+          });
       }
     );
-  };
-  const onFinish = async function () {
+  }
+  const onFinish = async function (e) {
     try {
-      const result = await handleUpload()
-      const result1 = await handleUpload1()
-      const result2 = await handleUpload2()
-      const picture = [`${url}`,`${url1}`,`${url2}`]
-      
+      const uploadTask = storage.ref(`images/${image.name}`).put(image);
+      const uploadTask1 = storage.ref(`images/${image1.name}`).put(image1);
+      const uploadTask2 = storage.ref(`images/${image2.name}`).put(image2);
+      setTimeout(() => {
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => {
+            const progress = Math.round(
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+            );
+            setProgress(progress);
+          },
+          (error) => {
+            console.log(error);
+          },
+          () => {
+            storage
+              .ref("images")
+              .child(image.name)
+              .getDownloadURL()
+              .then((url) => {
+                setUrl(url);
+              });
+          }
+        );
+        uploadTask1.on(
+          "state_changed",
+          (snapshot) => {
+            const progress = Math.round(
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+            );
+            setProgress(progress);
+          },
+          (error) => {
+            console.log(error);
+          },
+          () => {
+            storage
+              .ref("images")
+              .child(image1.name)
+              .getDownloadURL()
+              .then((url) => {
+                setUrl1(url);
+              });
+          }
+        );
+        uploadTask2.on(
+          "state_changed",
+          (snapshot) => {
+            const progress = Math.round(
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+            );
+            setProgress(progress);
+          },
+          (error) => {
+            console.log(error);
+          },
+          () => {
+            storage
+              .ref("images")
+              .child(image2.name)
+              .getDownloadURL()
+              .then((url) => {
+                setUrl2(url);
+              });
+          }
+        );
+      }, 0);
+      const picture = [];
+    
+      if (url2 !== "") {
+       
+          picture.push(`${url}`);
+          picture.push(`${url1}`);
+          picture.push(`${url2}`);
+        
+
+          
+   
+      }
+      else{
+        return alert("Chua cap nhat url")
+      }
+      const date = new Date();
       const data = {
         name: name,
         price: price,
@@ -191,36 +282,23 @@ export default function AddProduct() {
         jump: jump,
         dateend: dateend,
         picture: picture,
-        description: description,
+        description: [description],
         sellerId: localStorage.userID,
-        datecreate: Date.now(),
+        datecreate: `${date.getFullYear()}-${
+          date.getMonth() + 1
+        }-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
       };
- 
-     
-          const res = await instance.post("/products/add", data);
-          if (res.status == 200) {
-            const retUrl = location.state?.from?.pathname || "/seller/products";
-            navigate(retUrl);
-          } else {
-            alert("Invalid login.");
-          }
-        
-        
-       
-   
-     
-       
-        
-        
-      
-        
-       
-        
-      
-      
-    } catch (err) {
-      
-    }
+      console.log(data);
+
+      setTimeout(async () => {
+        const res = await instance.post("/products/add", data);
+        if (res.status == 200) {
+          alert("Invalid login.");
+        } else {
+          alert("Invalid login.");
+        }
+      }, 10000);
+    } catch (err) {}
   };
   const onGenderChange = (value) => {
     switch (value) {
@@ -249,7 +327,7 @@ export default function AddProduct() {
         }}
       >
         <Row gutter={24}>
-          <Col span={12}>
+          <Col span={24}>
             <Form.Item
               name="name"
               label="Tên sản phẩm"
@@ -259,11 +337,13 @@ export default function AddProduct() {
                   message: "Nhập tên sản phẩm",
                 },
               ]}
+              wrapperCol={{ offset: 3, span: 16 }}
             >
               <Input onChange={name_changed} />
             </Form.Item>
           </Col>
-          <Col span={12}>
+
+          <Col span={8}>
             <Form.Item
               name="jump"
               label="Buoc gia"
@@ -273,23 +353,26 @@ export default function AddProduct() {
                   message: "Nhập bước giá",
                 },
               ]}
+              wrapperCol={{ offset: 2, span: 16 }}
             >
               <InputNumber onChange={jump_changed} />
             </Form.Item>
           </Col>
-        </Row>
-        <Row gutter={24}>
-          <Col span={12}>
-            <Form.Item name="pricebuy" label="Giá mua ngay" rules={[
+          <Col span={8}>
+            <Form.Item
+              name="pricebuy"
+              label="Giá mua ngay"
+              rules={[
                 {
                   required: true,
                   message: "Nhập giá",
                 },
-              ]}>
+              ]}
+            >
               <InputNumber onChange={pricebuy_changed} />
             </Form.Item>
           </Col>
-          <Col span={12}>
+          <Col span={8}>
             <Form.Item
               name="price"
               label="Giá khởi điểm"
@@ -303,67 +386,84 @@ export default function AddProduct() {
               <InputNumber onChange={price_changed} />
             </Form.Item>
           </Col>
+
+          <Col span={24}>
+            <Form.Item
+              name="decription"
+              label="Mô tả sản phẩm"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input Intro",
+                },
+              ]}
+              wrapperCol={{ offset: 2, span: 18 }}
+            >
+              <Input.TextArea
+                showCount
+                maxLength={500}
+                onChange={description_changed}
+              />
+            </Form.Item>
+          </Col>
+
+          <Col span={12}>
+            <Form.Item name="dateend" label="Chọn ngày kết thúc">
+              <DatePicker
+                showTime
+                format="YYYY-MM-DD HH:mm:ss"
+                onChange={dateend_changed}
+                wrapperCol={{ offset: 5, span: 18 }}
+              />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              name="category"
+              label="Chon loai"
+              rules={[{ required: true }]}
+              wrapperCol={{ offset: 2, span: 16 }}
+            >
+              <Select onChange={category_change}>
+                {storeCategory.categories.map(function (item) {
+                  return (
+                    <Select.Option value={item.id}>{item.name}</Select.Option>
+                  );
+                })}
+              </Select>
+            </Form.Item>
+          </Col>
+          <Col span={24}>
+            <Form.Item name="radio-group" label="Gia hạn">
+              <Radio.Group>
+                <Radio value="true">Có</Radio>
+                <Radio value="false">Không</Radio>
+              </Radio.Group>
+            </Form.Item>
+          </Col>
+
+          <Col span={24}>
+            <Form.Item name="image1" label="Ảnh đại diện" wrapperCol={{ offset: 3, span: 20 }}>
+              <input type="file" onChange={image_changed} />
+            </Form.Item>
+          </Col>
+          <Col span={24}>
+            <Form.Item name="image2" label="Ảnh phụ một " wrapperCol={{ offset: 3, span: 18 }}>
+              <input type="file" onChange={image_changed1} />
+            </Form.Item>
+          </Col>
+          <Col span={24}>
+            <Form.Item name="image3" label="Ảnh phụ hai " wrapperCol={{ offset: 3, span: 18 }}>
+              <input type="file" onChange={image_changed2} />
+            </Form.Item>
+          </Col>
+          <Form.Item>
+            <Button type="primary" htmlType="submit">
+              Submit
+            </Button>
+          </Form.Item>
         </Row>
-        <Form.Item
-          name="decription"
-          label="Mô tả sản phẩm"
-          rules={[
-            {
-              required: true,
-              message: "Please input Intro",
-            },
-          ]}
-        >
-          <Input.TextArea
-            showCount
-            maxLength={100}
-            onChange={description_changed}
-          />
-        </Form.Item>
-        <Form.Item name="dateend" label="Chọn ngày kết thúc">
-          <DatePicker
-            showTime
-            format="YYYY-MM-DD HH:mm:ss"
-            onChange={dateend_changed}
-          />
-        </Form.Item>
-        <Form.Item name="radio-group" label="Gia hạn">
-          <Radio.Group>
-            <Radio value="true">Có</Radio>
-            <Radio value="false">Không</Radio>
-          </Radio.Group>
-        </Form.Item>
-        <Form.Item name="category" label="Select" rules={[{ required: true }]}>
-          <Select onChange={category_change}>
-            <Select.Option value="RuF5yXnJB8FkXgRebGm5">
-              Máy tính xách tay
-            </Select.Option>
-            <Select.Option value="nFKDk4PRH3UCmIcfX6JN">
-              Điện thoại di động
-            </Select.Option>
-          </Select>
-        </Form.Item>
-        <Form.Item name="image1" label="Ảnh đại diện ">
-          <input type="file" onChange={image_changed} />
-          <button onClick={handleUpload}>Upload</button>
-        </Form.Item>
-        <Form.Item name="image2" label="Ảnh phụ 1 ">
-          <input type="file" onChange={image_changed1} />
-          <button onClick={handleUpload1}>Upload</button>
-        </Form.Item>
-        <Form.Item name="image3" label="Ảnh phụ 2 ">
-          <input type="file" onChange={image_changed2} />
-          <button onClick={handleUpload2}>Upload</button>
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit" onClick={()=>{
-            
-          }}>
-            Submit
-          </Button>
-        </Form.Item>
       </Form>
-      
     </>
   );
 }

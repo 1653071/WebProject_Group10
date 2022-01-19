@@ -21,7 +21,7 @@ router.post('/register',function(req, res) {
         mail:user.mail,
         isRequest:false,
         isSeller:false,
-        accessToken:""
+        refreshToken:""
       }).then(()=>{
         delete user.password;
         return res.status(200).send(user);
@@ -65,7 +65,9 @@ router.post("/add", (req, res) => {
           password: req.body.password,
           username: req.body.username,
           birthdate: req.body.datecreate,
-          mail : req.body.mail
+          mail : req.body.mail,
+          isSeller:false,
+          isRequest:false
         });
   
         return res.status(200).send("Add successful");

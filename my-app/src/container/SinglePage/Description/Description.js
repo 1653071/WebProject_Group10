@@ -8,7 +8,7 @@ export default function Description({description}){
         <DescriptionWrapper>
            <Title level={4} style={{textAlign:"center"}}>Mô tả sản phẩm</Title>
            <DescriptionContent>
-               {description}
+               {description.map(description=>{return <div>{description}</div>})}
            </DescriptionContent>
            
         </DescriptionWrapper>
