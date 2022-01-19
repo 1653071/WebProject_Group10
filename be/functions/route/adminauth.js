@@ -41,7 +41,7 @@ router.post("/login",function (req, res) {
           const payload = {
             userId: response.userId,
           };
-          const accessToken = jwt.sign(payload, "SECRET_KEY_ADMIN", opt);
+          const accessToken = jwt.sign(payload, "SECRET_KEY_ADMIN");
           const refreshToken = randomstring.generate(80);
           let query1 = db.collection("admin").where("username", "==", username);
           res.status(200).send({

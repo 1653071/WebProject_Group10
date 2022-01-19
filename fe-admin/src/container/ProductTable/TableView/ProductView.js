@@ -20,8 +20,9 @@ export default function TableProduct() {
   };
 
   const handleOk = async () => {
-    const res = await instance.delete(`/products/delete/${state.iddelete}`);
-    const retUrl = location.state?.from?.pathname || '/';
+    console.log(localStorage.admin_accessToken)
+    const res = await instance.delete(`/products/delete/${state.iddelete}`,{headers: { 'x-access-token': localStorage.admin_accessToken}});
+    const retUrl = location.state?.from?.pathname || '/products';
     navigate(retUrl);
   };
 

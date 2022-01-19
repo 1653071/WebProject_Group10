@@ -20,10 +20,10 @@ export default function Demo() {
     const res = await instance.post("/adminauth/login",data);
     if (res.data.authetication) {
       // console.log(res.data.accessToken);
-      localStorage.accessToken = res.data.accessToken;
-      localStorage.name = res.data.name;
-      localStorage.isLoggin = true;
-      localStorage.username = res.data.username;
+      localStorage.admin_accessToken = res.data.accessToken;
+      localStorage.admin_name = res.data.name;
+      localStorage.admin_isLoggin = true;
+      localStorage.admin_username = res.data.username;
    
       // console.log(location.state);
       const retUrl = location.state?.from?.pathname || "/products";

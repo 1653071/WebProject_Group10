@@ -2,6 +2,7 @@ const { response } = require("express");
 const express = require("express");
 const router = express.Router();
 const db = require("../db");
+const authadmin = require("../middleware/authadmin");
 router.get("/", (req, res) => {
     (async () => {
         try {
@@ -26,13 +27,16 @@ router.get("/", (req, res) => {
       })();
 });
 //Create
-router.post("/add", (req, res) => {
+router.post("/add",authadmin, (req, res) => {
     (async () => {
         try {
-            const document = await db.collection("product_category").add({
+            const document = await db.collection("product_categories").add({
                 name: req.body.name,
             });
-            return res.status(200).send("Add successful");
+            if(document.id){
+                return res.status(200).send("Add successful");
+            }
+            return res.status(204).send("Add successful");
         } catch (error) {
             return res.status(500).send(error);
         }
@@ -66,7 +70,7 @@ router.delete("/delete/:id", (req, res) => {
                 document.delete();
                 return res.status(200).send("delete");
                }
-               return res.status(200).send("Ton tai san pham trong category.");
+               return res.status(201).send("Ton tai san pham trong category.");
            });
         } catch (error) {
             return res.status(500).send(error);
