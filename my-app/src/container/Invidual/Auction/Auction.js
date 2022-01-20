@@ -23,6 +23,12 @@ export default function AuctionProduct() {
       key: "price",
     },
     {
+      title: "Ngày",
+      dataIndex: "datecreate",
+      key: "price",
+      
+    },
+    {
       title: "Action",
       key: "action",
       render: (text, record) => (

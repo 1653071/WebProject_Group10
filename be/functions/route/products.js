@@ -2,7 +2,7 @@ const { response } = require("express");
 const express = require("express");
 const router = express.Router();
 const db = require("../db");
-const events =  require("events")
+
 const auth  = require("../middleware/auth.js")
 const authadmin  = require("../middleware/authadmin.js")
 var admin = require('firebase-admin');
@@ -84,7 +84,7 @@ router.get("/:id", (req, res) => {
 
     } catch (error) {
       console.log(error); 
-      return res.status(500).send(error);
+      
     }
   })();
 });

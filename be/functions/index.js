@@ -12,6 +12,7 @@ const commentRouter =require("./route/comment");
 const auth = require("./middleware/auth");
 const app = express();
 
+
 app.use(morgan('dev'));
 const cors = require("cors");
 

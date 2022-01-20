@@ -5,6 +5,7 @@ import { WatchListWrapper ,Title} from "./WatchList.style";
 import {instance} from "../../../ultils/ultils"
 export default function WatchList() {
   const [watchList,setWatchList] = useState([]);
+  const [data,setData] = useState({})
   useEffect(() => {
     const fetchData = async () => {
       const res = await instance(`watchlist/user/${localStorage.userID}`);
@@ -12,10 +13,15 @@ export default function WatchList() {
     }
     fetchData()
   }, [])
+  const fetch_product = async(id)=>{
+   await instance(`products/${id}`).then(res=>setData(res.data));
+    
+  }
   return (
     <WatchListWrapper>
-      <Card title="Card title">
+      <Card>
         {watchList.map(function(item) {
+        
          return <Card
           style={{ marginTop: 16 }}
           type="inner"
@@ -26,11 +32,11 @@ export default function WatchList() {
             <Col span={6}>
               <Image
                 width={200}
-                src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                src={item.image}
               />
             </Col>
             <Col span={18}>
-              <Title>asdasdasdasd</Title>
+              <Title>{item.nameproduct}</Title>
             </Col>
           </Row>
         </Card>

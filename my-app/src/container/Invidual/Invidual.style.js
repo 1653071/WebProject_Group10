@@ -4,6 +4,7 @@ export const InvidualWrapper = styled.div`
      padding-right:10% ;
      padding: 50px;
      display: flex;
+     height: 100vh;
 `;
 export const AvatarWrapper=styled.div`
      width: 30%;

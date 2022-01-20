@@ -25,6 +25,7 @@ import {
 import Profile from "./Profile/Profile";
 import WatchList from "./WatchList/WatchList";
 import AuctionProduct from "./Auction/Auction";
+import WinnerAuction from "./WinnerAuction/WinnerAuction";
 const { SubMenu } = Menu;
 
 export default function Invidual() {
@@ -45,7 +46,9 @@ export default function Invidual() {
           <Title>Danh sách đang đấu giá</Title>
           <AuctionProduct /></>);
       default:
-        break;
+        return (<>
+          <Title>Danh sách đấu giá thắng</Title>
+          <WinnerAuction /></>);
      }
     };
   return (

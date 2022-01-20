@@ -73,6 +73,8 @@ export default function Information(props) {
     const data = {
       productId: props.item.id,
       userId: localStorage.userID,
+      name: props.item.name,
+      image: props.item.image[0]
     };
     const res = await instance.post("watchlist/add", data);
     if (res.status === 200) {

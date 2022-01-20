@@ -11,7 +11,9 @@ router.post("/add", (req, res) => {
             if (check.empty) {
                 const document = await db.collection("watchlist").add({
                     productId:req.body.productId,
-                    userId : req.body.userId
+                    userId : req.body.userId,
+                    nameproduct:req.body.name,
+                    image:req.body.image,
                 });
     
                 return res.status(200).send("Add successful");
@@ -51,7 +53,9 @@ router.get("/user/:id", (req, res) => {
                     if(req.params.id === doc.data().userId) {
                         const selectedItem = {
                             userId : doc.data().userId,
-                            productId :doc.data().productId
+                            productId :doc.data().productId,
+                            nameproduct:doc.data().nameproduct,
+                            image:doc.data().image,
                         };
                         response.push(selectedItem);
                     }

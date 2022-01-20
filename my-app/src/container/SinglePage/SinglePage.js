@@ -14,7 +14,9 @@ import Seller from "./Seller/Seller";
 import RelateProduct from "./RelateProduct/RelateProduct";
 import History from "./History/History";
 import { instance } from "../../ultils/ultils";
+
 export default function SinglePage(props) {
+  
   const location = useLocation();
   const { item1 } = location.state;
   const [usersauction, setUserauction] = useState([]);

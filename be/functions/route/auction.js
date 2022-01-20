@@ -133,69 +133,79 @@ function removeDuplicates(originalArray, prop) {
    return newArray;
 }
 // get san pham winner 
-// router.get("/winner/:ID", (req, res) => {
-//   const UserID1 = req.params.ID;
-//   (async () => {
-//     try {
-//       let query = db.collection("auction").where("userId","==",UserID1);
-//       let response = [];
-//       const winner =[];
-//       await query.get().then((querySnapShot) => {
-//         let docs = querySnapShot.docs;
-//         for (let doc of docs) {
-//           const selectedItem = {
-//             productId:doc.data().productId,
+router.get("/winner/:ID", (req, res) => {
+  const UserID1 = req.params.ID;
+  (async () => {
+    try {
+      let query = db.collection("auction").where("userId","==",UserID1);
+      let response = [];
+      
+      await query.get().then((querySnapShot) => {
+        let docs = querySnapShot.docs;
+        for (let doc of docs) {
+          const selectedItem = {
+            productId:doc.data().productId,
             
-//           };
-//           response.push(selectedItem);
+          };
+          response.push(selectedItem);
           
-//         }
+        }
         
-//         var uniqueArray = removeDuplicates(response, "productId");
-        
-//         uniqueArray.map((item)=>{
-//           let response1 = [];
-//           console.log(item.productId);
-//           let query1 = db.collection("auction").where("productId","==",item.productId);
-//           (()=>{
-//             await query1.get().then((querySnapShot) => {
-//               let docs = querySnapShot.docs;
-//               for (let doc of docs) {
-//                 const selectedItem = {
-//                   productId:doc.data().productId,
-//                   sellerId: doc.data().sellerId,
-//                   userId: doc.data().userId,
-//                   price : doc.data().price,
-//                   datecreate : doc.data().datecreate
+        var uniqueArray = removeDuplicates(response, "productId");
+        let winner = [];
+        for(let i = 0; i < uniqueArray.length; i++){
+          
+          let response1 = [];
+         
+          let query1 = db.collection("auction").where("productId","==",uniqueArray[i].productId);
+          (async ()=>{
+            try {
+              await query1.get().then((querySnapShot) => {
+                let docs = querySnapShot.docs;
+                for (let doc of docs) {
+                  const selectedItem = {
+                    productId:doc.data().productId,
+                    sellerId: doc.data().sellerId,
+                    userId: doc.data().userId,
+                    price : doc.data().price,
+                    datecreate : doc.data().datecreate
+                    
+                  };
+                  response1.push(selectedItem);
                   
-//                 };
-//                 response1.push(selectedItem);
+                }
                 
-//               }
-              
-//               const tmp = []
-//               tmp= response1.sort((first, second) => {
-//                 return first.price < second.price ? 1 : -1;
-//               })
-//               .slice(0, 1)
-//               .map((item) => {
-//                 return item.userId = UserID1;
-//               })
-//               if(tmp.length != 0){
-//                   winner.push(tmp[0])
-//               }
-              
-//             })
-//           })();
-          
-//         })
+                
+                const tmp= response1.sort((first, second) => {
+                  return first.price < second.price ? 1 : -1;
+                })
+                .slice(0,1)
+                .filter((item) => {
+                  return item.userId = UserID1;
+                })
+                
+               
+                winner.push(tmp[0])
+                console.log(winner)
+                
+              })
+            }catch(error){
+              return res.status(500).send(error);
+            }
+          })();
+        }
+        setTimeout(() => {
+          console.log(winner)
+          return res.status(200).send(winner);
+        }, 5000);
         
-//         return res.status(200).send(winner);
-//       });
-//       return res.status(200).send(winner);
-//     } catch (error) {
-//       return res.status(500).send(error);
-//     }
-//   })();
-// });
+        
+        
+      });
+      
+    } catch (error) {
+      console.log(error);
+    }
+  })();
+});
 module.exports = router;
