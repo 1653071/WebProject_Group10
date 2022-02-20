@@ -22,4 +22,6 @@ export const SearchbarWrapper = styled.div`
 `;
 export const ProductArea= styled.div`
     margin-top: 60px;
+    width: 90%;
+    margin: 0 auto;
 `;

@@ -1,8 +1,10 @@
 import styled from "styled-components";
 export const Price = styled.div`
-  float: right;
-  color: #a0a0a0;
-  
+  margin:10px auto;
+
+ 
+  color: black;
+  font-weight:bold;
   font-size:16px;
   width: 50%;
 `;

@@ -12,6 +12,7 @@ import { Input, Space } from 'antd';
 import SearchBar from "../../components/SearchBar/SearchBar";
 import reducer , {initialState} from '../../reducer/ProductReducer'
 import cateReducer , {initialStateCate} from '../../reducer/ProductCategoryReducer'
+import { ListingWrapper } from "./Listing.style";
 const { Search } = Input;
 const { SubMenu } = Menu;
 export default function Listing(props) {
@@ -56,15 +57,18 @@ export default function Listing(props) {
   return (
     <AppContext.Provider value={{ store, dispatch }}>
       
-      <Row gutter={24} style={{ width: "100%" }}>
+     <ListingWrapper>
+     <Row gutter={24} style={{ width: "100%" }}>
         <Col span={6}>
-          <SearchBar></SearchBar>
+          <SearchBar/>
           <Menu
-            style={{ float: "left" }}
+            style={{ float: "left", marginTop:"10px"}}
             defaultSelectedKeys={["1"]}
             defaultOpenKeys={["sub1"]}
             mode="inline"
+            theme="dark"
             onClick={filter}
+            
           >
           <Menu.Item key="all">
             Tất cả sản phẩm
@@ -85,6 +89,7 @@ export default function Listing(props) {
           </ListingGrid>
         </Col>
       </Row>
+     </ListingWrapper>
     </AppContext.Provider>
   );
 }

@@ -17,12 +17,12 @@ export default function ProductCard({ item }) {
       hoverable
       style={{ width: "100%" }}
       cover={<img alt="example" src={item.image[0]} height={300} />}
+      bordered={true}
     >
       <Meta
         title={item.name}
-        style={{ fontWeight: "600", marginTop: "10px" }}
       />
-      <Price>{item.price}</Price>
+      <Price>Price: {item.price}</Price>
       <Time>
        
       </Time>
